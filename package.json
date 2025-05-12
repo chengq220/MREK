@@ -15,9 +15,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postinstall": "tailwindcss build src/index.css -o src/tailwind-output.css",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "tw:build": "tailwindcss build ./src/css/tailwind.css -o ./public/css/tailwind.css"
   },
   "eslintConfig": {
     "extends": [
