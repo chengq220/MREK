@@ -35,7 +35,8 @@ function GridDefault(){
     ];
     return(
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-4 py-10">
-            {data.map(item => <CardDefault
+            {data.map((item, index) => <CardDefault
+                key={index}
                 title={item[0]}
                 description={item[1]}
                 iconUrl={item[2]}

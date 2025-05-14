@@ -9,20 +9,16 @@ function PrefInput() {
         setInputValue(event.target.value)
     }
 
-    const sendRequest = (event) =>{
+    const sendPref = (event) =>{
         console.log("have been clicked")
         event.preventDefault()
         let s = inputValue.split(",");
-        console.log(s)
-        const preference = {
-            "prefList": s
-        }
         fetch("http://localhost:8000/pref", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ pref: preference })  // Send data in the correct format
+        body: JSON.stringify({ pref: s })  // Send data in the correct format
         })
         .then(response => response.json())
         .then(data => console.log(data))
@@ -42,7 +38,7 @@ function PrefInput() {
                         className="flex items-center bg-green-100 rounded rounded-l-none border-0 px-3 font-bold text-grey-100">
                         <button
                             className="bg-gredient-dark hover:bg-gredient-light text-lg font-bold py-3 px-6 rounded"
-                            onClick={sendRequest}
+                            onClick={sendPref}
                             >
                             Search        
                         </button>
