@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 class CardDefault extends React.Component {   
     render() {
@@ -22,6 +22,22 @@ class CardDefault extends React.Component {
 }
  
 function GridDefault(){
+    // const [data, setData] = useState(null);
+
+    // useEffect(() => {
+    //     fetchData();
+    // }, []); 
+
+    // const fetchData = async () => {
+    //     try {
+    //         const response = await fetch('https://localhost:8000/ytMusicSearch');
+    //         const result = await response.json();
+    //         setData(result); // Update the state with the fetched data
+    //         console.log(data)
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    // }; 
         const data = [
         ["Title 1", "Description 1", "https://example.com/icon1.svg"],
         ["Title 2", "Description 2", "https://example.com/icon2.svg"],

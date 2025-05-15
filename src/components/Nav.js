@@ -1,16 +1,16 @@
 import '../css/tailwind.css';
+import { Link } from "react-router-dom";
 
 function Nav() {
+  
   return (
     <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-10">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">
-        <div className="text-lg font-semibold">fdasfwer</div>
+        <div className="text-lg font-semibold">MusicRecPlus</div>
 
         <div className="hidden lg:flex gap-6 text-sm">
-          <a href="#" className="hover:text-gray-300">Markasdfwreets</a>
-          <a href="#" className="hover:text-gray-300">faewarwar shit</a>
-          <a href="#" className="hover:text-gray-300">Exchange</a>
-          <a href="#" className="hover:text-gray-300">Support</a>
+          <Link to="/" className="hover:text-gray-300">Recommendation Feed</Link>
+          <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
         </div>
 
         <div className="lg:hidden">

@@ -1,16 +1,21 @@
-import '../css/App.css';
 import '../css/tailwind.css';
-import PrefInput from './Pref';
-import GridDefault  from './Card';
+import Nav from './Nav';
+import Feed from './Feed';
+import PlayList from './PlayList';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
 
 function App() {
   return (
-      <div className="App">
-        <div className="w-1/2 mx-auto">
-            <PrefInput/>
-            <GridDefault/>
-        </div>
-      </div>
+    <React.StrictMode>
+      <Router>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Feed />} />
+          <Route path="/playlist" element={<PlayList />} />
+        </Routes>
+      </Router>
+    </React.StrictMode>
   );
 }
 

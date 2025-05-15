@@ -2,23 +2,22 @@ import '../css/tailwind.css';
 import { useState } from 'react';
 
 function PrefInput() {
-    const [inputValue, setInputValue] = useState('');
+    const [query, setQuery] = useState('');
 
     const handleChange = (event) => {
-        console.log(inputValue)
-        setInputValue(event.target.value)
+        console.log(query)
+        setQuery(event.target.value)
     }
 
-    const sendPref = (event) =>{
+    const sendQuery = async (event) =>{
         console.log("have been clicked")
         event.preventDefault()
-        let s = inputValue.split(",");
         fetch("http://localhost:8000/pref", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ pref: s })  // Send data in the correct format
+        body: JSON.stringify({query})  // Send data in the correct format
         })
         .then(response => response.json())
         .then(data => console.log(data))
@@ -38,7 +37,7 @@ function PrefInput() {
                         className="flex items-center bg-green-100 rounded rounded-l-none border-0 px-3 font-bold text-grey-100">
                         <button
                             className="bg-gredient-dark hover:bg-gredient-light text-lg font-bold py-3 px-6 rounded"
-                            onClick={sendPref}
+                            onClick={sendQuery}
                             >
                             Search        
                         </button>
