@@ -20,42 +20,40 @@ class CardDefault extends React.Component {
         );
     }
 }
+
  
 function GridDefault(){
-    // const [data, setData] = useState(null);
+    const [data, setData] = useState(null);
 
-    // useEffect(() => {
-    //     fetchData();
-    // }, []); 
+    useEffect(() => {
+        fetchData();
+        console.log(data)
+    }, []); 
 
-    // const fetchData = async () => {
-    //     try {
-    //         const response = await fetch('https://localhost:8000/ytMusicSearch');
-    //         const result = await response.json();
-    //         setData(result); // Update the state with the fetched data
-    //         console.log(data)
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //     }
-    // }; 
-        const data = [
-        ["Title 1", "Description 1", "https://example.com/icon1.svg"],
-        ["Title 2", "Description 2", "https://example.com/icon2.svg"],
-        ["Title 3", "Description 3", "https://example.com/icon3.svg"],
-        ["Title 4", "Description 4", "https://example.com/icon4.svg"],
-        ["Title 5", "Description 4", "https://example.com/icon4.svg"],
-        ["Title 6", "Description 4", "https://example.com/icon4.svg"],
-        ["Title 7", "Description 4", "https://example.com/icon4.svg"],
-        ["Title 8", "Description 4", "https://example.com/icon4.svg"],
-        ["Title 9", "Description 4", "https://example.com/icon4.svg"],
-    ];
+    const fetchData = async () => {
+        try{
+            const res = await fetch("http://localhost:8000/query", {method: "GET"})
+            const dat = await res.json()
+            console.log(dat)
+            setData(dat.result)
+        }
+        catch (e){
+            console.log("Failed to retrieve from db")
+        }
+    }; 
+
+    if(!data){
+        return(
+            <div>Currently Loading Data</div>
+        )
+    }
     return(
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-4 py-10">
             {data.map((item, index) => <CardDefault
                 key={index}
-                title={item[0]}
-                description={item[1]}
-                iconUrl={item[2]}
+                title={item['track_name']}
+                description={item['artists']}
+                iconUrl={item['track_genre']}
                 />
             )}
         </div>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 function PrefInput() {
     const [query, setQuery] = useState('');
+    const [res, setRes] = useState('')
 
     const handleChange = (event) => {
         console.log(query)
@@ -12,13 +13,8 @@ function PrefInput() {
     const sendQuery = async (event) =>{
         console.log("have been clicked")
         event.preventDefault()
-        fetch("http://localhost:8000/pref", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({query})  // Send data in the correct format
-        })
+        fetch("http://localhost:8000/query", {
+        method: "GET"})
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(error => console.error('Error:', error));

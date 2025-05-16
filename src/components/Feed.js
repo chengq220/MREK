@@ -5,7 +5,6 @@ import '../css/tailwind.css';
 function Feed(){
     return(
         <div className="w-1/2 mx-auto">
-            <PrefInput/>
             <GridDefault/>
         </div>
     );
