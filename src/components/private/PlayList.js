@@ -1,4 +1,4 @@
-import '../css/tailwind.css';
+import '../../css/tailwind.css';
 import React from "react";
 
 class PlayList extends React.Component { 

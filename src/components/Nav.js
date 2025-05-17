@@ -11,6 +11,7 @@ function Nav() {
         <div className="hidden lg:flex gap-6 text-sm">
           <Link to="/" className="hover:text-gray-300">Recommendation Feed</Link>
           <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
+          <Link to="/login">Login</Link>
         </div>
 
         <div className="lg:hidden">

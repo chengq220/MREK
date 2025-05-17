@@ -1,6 +1,5 @@
-import PrefInput from './Pref';
 import GridDefault  from './Card';
-import '../css/tailwind.css';
+import '../../css/tailwind.css';
 
 function Feed(){
     return(
