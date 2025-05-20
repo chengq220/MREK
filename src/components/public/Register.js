@@ -1,17 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useAuth} from '../auth/AuthContext';
 
 function Register(){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+    const {user, token, login, logout, verify} = useAuth();
 
     useEffect(() => {
+        if(verify){
+            navigate("/feed");
+        }
         return () => {
             console.log("Cleanup if needed");
         };
-    }, [error]);
+    }, [error, verify]);
 
     const usernameChange = (event) => {
         setUsername(event.target.value)

@@ -6,22 +6,11 @@ import Login from './public/Login';
 import Register from './public/Register';
 import PlayList from './private/PlayList';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import React, { useState, useEffect } from "react";
+import { AuthProvider } from "./auth/auth";
 
 function App() {
-  const [isAuth, setAuth] = useState(false)
-
-  // const display = () =>{
-  //   if(isAuth){
-  //     return <Route path = "/" element = {<Home/>} />
-  //   }
-  //   else{
-  //     return <Private />
-  //   }
-  // }
-
   return (
-    <React.StrictMode>
+    <AuthProvider>
       <Router>
         <Nav />
         <Routes>
@@ -32,7 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
-    </React.StrictMode>
+    </AuthProvider>
   );
 }
 

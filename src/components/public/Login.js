@@ -1,26 +1,28 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useAuth} from '../auth/AuthContext';
 
 function Login(){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+    const {user, token, login, logout, verify} = useAuth();
 
     useEffect(() => {
-        return () => {
-            console.log("Cleanup if needed");
+        if(verify){
+            navigate("/feed");
+        }
+        return () => {  
         };
-    }, [error]);
+    }, [error,verify]);
 
     const usernameChange = (event) => {
         setUsername(event.target.value)
-        console.log(username)
     }
 
     const passwordChange = (event) => {
         setPassword(event.target.value)
-        console.log(password)
     }
 
     const logIn = async (event) =>{
@@ -39,9 +41,13 @@ function Login(){
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userInfo)
             })
+
+            const data = await response.json();
             if (response.ok) {
-                console.log("successfully created uesrs")
+                console.log("successfully logged in")
                 setError(false)
+                sessionStorage.setItem("login_token", data["auth_token"])
+                login(data["auth_token"])
                 navigate("/feed");
             }
             else if(response.status == 101){
