@@ -9,7 +9,7 @@ function PlayList(){
 
     useEffect(() => {
         if(!verify){
-            navigate("/home");
+            navigate("/");
         }
     }, [verify]);
     

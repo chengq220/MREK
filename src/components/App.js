@@ -5,6 +5,7 @@ import Feed from './private/Feed';
 import Login from './public/Login';
 import Register from './public/Register';
 import PlayList from './private/PlayList';
+import Preference from './private/Preference'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from "./auth/auth";
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/playlist" element={<PlayList />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/preference" element={<Preference />} />
         </Routes>
       </Router>
     </AuthProvider>

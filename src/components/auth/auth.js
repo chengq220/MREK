@@ -11,7 +11,7 @@ export const AuthProvider = ({children}) => {
 
   const login = (newToken) => {
     changeToken(newToken);
-    changeUser("Cheng");
+    changeUser("Username");
     sessionStorage.setItem("login_token", newToken);
   };
 
@@ -21,6 +21,7 @@ export const AuthProvider = ({children}) => {
     setVerified(false);
     sessionStorage.removeItem("login_token");
   };
+
   useEffect(() => {
     const access_token = sessionStorage.getItem("login_token")
     if(token){

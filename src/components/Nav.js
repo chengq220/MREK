@@ -38,6 +38,7 @@ function NavUnsigned(){
 
 function NavSigned(){
   const {user, token, login, logout, verify} = useAuth();
+
   return(
     <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-10">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">

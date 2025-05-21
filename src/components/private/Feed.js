@@ -11,7 +11,7 @@ function Feed(){
 
     useEffect(() => {
         if(!verify){
-            navigate("/home");
+            navigate("/");
         }
     }, [verify]);
 
