@@ -7,10 +7,12 @@ import { useNavigate } from 'react-router-dom';
 
 function Feed(){
     const navigate = useNavigate();
-    const {user, token, login, logout, verify} = useAuth();
+    const {token, login, logout, verify} = useAuth();
 
     useEffect(() => {
+        console.log(verify)
         if(!verify){
+            console.log("redirecting to home")
             navigate("/");
         }
     }, [verify]);

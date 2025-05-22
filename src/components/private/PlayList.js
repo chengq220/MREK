@@ -5,7 +5,7 @@ import { useAuth} from '../auth/AuthContext';
 
 function PlayList(){ 
     const navigate = useNavigate();
-    const {user, token, login, logout, verify} = useAuth();
+    const {  token, login, logout, verify} = useAuth();
 
     useEffect(() => {
         if(!verify){

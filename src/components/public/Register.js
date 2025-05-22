@@ -7,7 +7,7 @@ function Register(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
-    const {user, token, login, logout, verify} = useAuth();
+    const { token, login, logout, verify} = useAuth();
 
     useEffect(() => {
         if(verify){
@@ -29,6 +29,7 @@ function Register(){
     }
 
     const registerUser = async (event) =>{
+        console.log("hi ive been clicked")
         event.preventDefault()
         if (username == "" || password == "") {
             return;

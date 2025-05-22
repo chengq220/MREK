@@ -6,8 +6,8 @@ function Login(){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
-    const {user, token, login, logout, verify} = useAuth();
+    const [error, setError] = useState('');
+    const {token, login, logout, verify} = useAuth();
 
     useEffect(() => {
         if(verify){
@@ -25,43 +25,28 @@ function Login(){
         setPassword(event.target.value)
     }
 
-    const logIn = async (event) =>{
-        event.preventDefault()
-        if (username == "" || password == "") {
-            return;
-        }
-        
-        try {
-            const userInfo = {
-                'username':username,
-                'password':password
-            }
-            const response = await fetch("http://localhost:8000/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userInfo)
-            })
-
-            const data = await response.json();
-            if (response.ok) {
-                console.log("successfully logged in")
-                setError(false)
-                sessionStorage.setItem("login_token", data["auth_token"])
-                login(data["auth_token"])
+    const logInWrap = async () =>{
+        const res = await login(username, password)
+        if (res != 1){
+            setError(res);
+        }else{
+            if(true){
+                navigate("/preference");
+            }else{
                 navigate("/feed");
             }
-            else if(response.status == 101){
-                console.log("Username/Password not correct")
-                setError(true)
-            }
-        }
-        catch (error){
-            console.log(error)
-            setError(true)
         }
     };
 
+    const errorDisplay = () => {
+      switch(error) {
+        case 101: return <div className="text-red-100">Incorrect username/password</div>;
+        case 102: return <div className="text-red-100">Empty username or password</div>;
+        case 103: return <div className="text-red-100">Error connecting to the server</div>;
 
+        default:  return null;
+      }
+    }
     return(
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -70,7 +55,7 @@ function Login(){
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                { error ? <div className="text-red-100">Incorrect username/password</div> : null }
+                {errorDisplay()}
                 <form className="space-y-6" action="#" method="POST">
                 <div>
                     <label for="email" className="block text-sm/6 font-medium text-gray-900">Email address</label>
@@ -93,7 +78,7 @@ function Login(){
 
                 <div>
                     <button type="submit" 
-                            onClick={logIn}
+                            onClick={logInWrap}
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                 Sign in
                     </button>
