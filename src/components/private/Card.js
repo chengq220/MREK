@@ -25,26 +25,36 @@ class CardDefault extends React.Component {
 function GridDefault(){
     const [data, setData] = useState(null);
 
-    useEffect(() => {
-        fetchData();
-        console.log(data)
-    }, []); 
+    // useEffect(() => {
+    //     fetchData();
+    //     console.log(data)
+    // }, []); 
 
-    const fetchData = async () => {
-        try{
-            const res = await fetch("http://localhost:8000/query", {method: "GET"})
-            const dat = await res.json()
-            console.log(dat)
-            setData(dat.result)
-        }
-        catch (e){
-            console.log("Failed to retrieve from db")
-        }
-    }; 
+    // const fetchData = async () => {
+    //     console.log("fetching data rn")
+    //     try{
+    //         const userInfo = {
+    //             'username':sessionStorage.getItem("username")
+    //         }
+    //         const res = await fetch("http://localhost:8000/getMusic", {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify(userInfo)
+    //         })
+    //         const dat = await res.json()
+    //         console.log(dat)
+    //         setData(dat.result)
+    //     }
+    //     catch (e){
+    //         console.log("Failed to retrieve from db")
+    //     }
+    // }; 
 
     if(!data){
         return(
-            <div>Currently Loading Data</div>
+             <div className="w-1/2 h-1/2 mx-auto">
+                <div>Currently Loading Data</div>
+             </div>
         )
     }
     return(

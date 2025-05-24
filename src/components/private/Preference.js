@@ -8,7 +8,12 @@ function Preference() {
     const { login, logout, verify} = useAuth();
     const [artist, setArtist] = useState('')
     const [genre, setGenre] = useState('')
+    const [load, setLoaded] = useState(false)
     const username = sessionStorage.getItem("username")
+
+    useEffect(() => {
+        getPreference()
+    }, []);
 
     useEffect(() => {
         if(!verify){
@@ -16,6 +21,8 @@ function Preference() {
         }
     }, [verify]);
 
+    useEffect(()=>{
+    }, [load]);
 
     const handleArtistChange = (event) => {
         setArtist(event.target.value)
@@ -23,6 +30,24 @@ function Preference() {
 
     const handleGenreChange = (event) => {
         setGenre(event.target.value)
+    }
+
+    const getPreference = async() =>{
+        const userinfo = {'user': username}
+        const response = await fetch("http://localhost:8000/getPref", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userinfo)
+        })
+        if(response.ok){
+            let data = await response.json()
+            if( data["res"].length > 0){
+                const dd = data["res"][0]
+                setGenre(dd["fav_genre"])
+                setArtist(dd["fav_artist"])
+                setLoaded(true)
+            }
+        }
     }
 
     const submitPreference = async () =>{
@@ -39,8 +64,8 @@ function Preference() {
     }
 
     return (
-        <div class="flex h-screen">
-            <div class="m-auto">
+        <div className="flex h-screen">
+            <div className="m-auto">
                 <h1>Preferences</h1>
                 <div className="w-full max-w-xs">
                     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -48,13 +73,23 @@ function Preference() {
                         <label className="block text-gray-700 text-sm font-bold mb-2">
                             Genre
                         </label>
-                        <input onChange={handleGenreChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Genre"/>
+                        <input 
+                            value={genre || ""}
+                            onChange={handleGenreChange}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                            type="text" 
+                            placeholder="Genre"/>
                         </div>
                         <div className="mb-6">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
                             Artist
                         </label>
-                        <input onChange={handleArtistChange} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Artist"/>
+                        <input 
+                            value={artist || ""}
+                            onChange={handleArtistChange} 
+                            className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+                            type="text" 
+                            placeholder="Artist"/>
                         </div>
                         <div className="flex items-center justify-between">
                         <button

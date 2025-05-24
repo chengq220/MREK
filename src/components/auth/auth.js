@@ -28,7 +28,6 @@ export const AuthProvider = ({children}) => {
             sessionStorage.setItem("login_token", data["auth_token"])
             sessionStorage.setItem("username", userInfo["username"])
             changeToken(data["auth_token"])
-            changeUser(userInfo["username"])
             return 1;
           }
           else if(response.status == 101){
