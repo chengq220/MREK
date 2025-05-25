@@ -1,7 +1,44 @@
 import '../../css/tailwind.css';
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth} from '../auth/AuthContext';
+import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+
+function Entry(){
+    const [isLove, setLove] = useState('')
+    
+    useEffect(() => {
+    }, [isLove]);
+
+    const updateLike = () =>{
+        setLove(!isLove)
+    }
+
+    const showOption = () =>{
+        console.log("show option button clicked")
+    }
+    
+    return(
+        <div className="bg-red-50 flex flex-row items-center">
+            <div className="basis-[30%]">Thumbnail</div> 
+            <div className="basis-[50%]">
+                <h1>Song name</h1>
+                <p>Artist name</p>
+            </div>
+            <button 
+                onClick={updateLike}
+                className="basis-[10%]">
+                {isLove ? <FcLike /> : <FcLikePlaceholder />}
+            </button>
+            <button 
+                onClick={showOption}
+                className="basis-[10%]">
+                <HiOutlineDotsVertical />
+            </button>
+        </div>
+    );
+}
 
 function PlayList(){ 
     const navigate = useNavigate();
@@ -14,98 +51,9 @@ function PlayList(){
     }, [verify]);
     
     return(
-        <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-            <li className="pb-3 sm:pb-4">
-                <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className="shrink-0">
-                        <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Neil image"></img>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Neil Sims
-                        </p>
-                        <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        email@flowbite.com
-                        </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        $320
-                    </div>
-                </div>
-            </li>
-            <li className="py-3 sm:py-4">
-                <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className="shrink-0">
-                        <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Neil image"></img>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Bonnie Green
-                        </p>
-                        <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        email@flowbite.com
-                        </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        $3467
-                    </div>
-                </div>
-            </li>
-            <li className="py-3 sm:py-4">
-                <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className="shrink-0">
-                        <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-2.jpg" alt="Neil image"></img>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Michael Gough
-                        </p>
-                        <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        email@flowbite.com
-                        </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        $67
-                    </div>
-                </div>
-            </li>
-            <li className="py-3 sm:py-4">
-                <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className="shrink-0">
-                        <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Neil image"></img>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Thomas Lean
-                        </p>
-                        <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        email@flowbite.com
-                        </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        $2367
-                    </div>
-                </div>
-            </li>
-            <li className="pt-3 pb-0 sm:pt-4">
-                <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className="shrink-0">
-                        <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-4.jpg" alt="Neil image"></img>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Lana Byrd
-                        </p>
-                        <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        email@flowbite.com
-                        </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        $367
-                    </div>
-                </div>
-            </li>
-        </ul>
+        <div className="w-1/2 mx-auto">
+            <Entry />
+       </div>
     );
 }
 
