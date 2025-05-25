@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth} from '../auth/AuthContext';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import Loading from "../Loading";
 
 function Entry(){
     const [isLove, setLove] = useState('')
@@ -40,20 +41,58 @@ function Entry(){
     );
 }
 
+function Lists({data}){
+    const [haveList, setHaveList] = useState(false)
+    return(
+        <div className="w-1/2 mx-auto">
+            <Entry />
+        </div>
+       
+    );
+
+}
+
 function PlayList(){ 
     const navigate = useNavigate();
-    const {  token, login, logout, verify} = useAuth();
+    const { token, login, logout, verify} = useAuth();
+    const [isLoading, setLoad] = useState(true)
+    const [dt, setData] = useState('')
 
+    const getPlaylistData = async ()=>{
+        const payload = {
+            "username" : sessionStorage.getItem("username"),
+            "playlist" : ""
+        }
+        const res = await fetch("http://localhost:8000/getPlaylist", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+        })
+        if(res.ok){
+            setLoad(false)
+        }
+        const data = await res.json()
+        setData(data["result"])
+    }
+
+    
     useEffect(() => {
         if(!verify){
             navigate("/");
         }
     }, [verify]);
+
+    useEffect(() => {
+        getPlaylistData()
+    }, [])
+
+    useEffect(() =>{}, [isLoading])
     
     return(
-        <div className="w-1/2 mx-auto">
-            <Entry />
-       </div>
+        <>
+            {isLoading ? <Loading /> : <Lists data = {dt}/>}
+        </>
+       
     );
 }
 

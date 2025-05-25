@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
+import Loading from "../Loading";
 
 const CardDefault = ({ song }) => {
     const addToPlayList = async() =>{
@@ -57,9 +58,7 @@ function GridDefault(){
 
     if(!data){
         return(
-             <div className="w-1/2 h-1/2 mx-auto">
-                <div>Currently Loading Data</div>
-             </div>
+             <Loading />
         )
     }
     return(
