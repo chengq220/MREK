@@ -10,7 +10,6 @@ function Feed(){
     const {token, login, logout, verify} = useAuth();
 
     useEffect(() => {
-        console.log(verify)
         if(!verify){
             console.log("redirecting to home")
             navigate("/");

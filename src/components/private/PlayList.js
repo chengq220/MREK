@@ -7,9 +7,8 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import Loading from "../Loading";
 import PopUp from "../PopUp";
 
-function Entry(){
+function Entry({item, index}){
     const [isLove, setLove] = useState('')
-    
     useEffect(() => {
     }, [isLove]);
 
@@ -42,6 +41,14 @@ function Entry(){
     );
 }
 
+function List({data}){
+    return(
+        <>
+            {data.map((item, index) => <Entry item ={item} index = {index}/>)}
+        </>
+    )
+}
+
 function NoList(){
     const [openPopup, setPopup] = useState(false)
     const handleRemovePopup = () => {
@@ -67,7 +74,36 @@ function NoList(){
 }
 
 function Lists({data}){
-    const [haveList, setHaveList] = useState(false)
+    const [haveList, setList] = useState(true)
+
+    useEffect(() =>{
+        if(data.length > 0){
+            setList(true)
+        }else{
+            setList(false)
+        }
+    }, [])
+
+    return(
+        <>
+        {haveList ? <div className="w-1/2 mx-auto"><List data = {data}/></div>: <NoList />}
+        </>
+    );
+
+}
+
+function PlayList(){ 
+    const navigate = useNavigate();
+    const { token, login, logout, verify} = useAuth();
+    const [isLoading, setLoad] = useState(true)
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        if(!verify){
+            navigate("/");
+        }
+    }, [verify]);
+
     const getPlaylistItems = async() =>{
         const payload = {
             "username" : sessionStorage.getItem("username"),
@@ -80,70 +116,25 @@ function Lists({data}){
         })
         if(res.ok){
             const data = await res.json()
+            setData(data["result"])
         }
         
     }
-
-
-    useEffect(() => {
-        if(data.length > 0){
-            setHaveList(true)
-        }else{
-            getPlaylistItems()
-        }
-    }, [])
-
-    return(
-        <>
-        {haveList ? <div className="w-1/2 mx-auto"><Entry /></div>: <NoList />}
-        </>
-    );
-
-}
-
-function PlayList(){ 
-    const navigate = useNavigate();
-    const { token, login, logout, verify} = useAuth();
-    const [isLoading, setLoad] = useState(true)
-    const [dt, setData] = useState('')
-
-    const getPlaylistData = async ()=>{
-        const payload = {
-            "username" : sessionStorage.getItem("username")
-        }
-        try{
-            const res = await fetch("http://localhost:8000/getPlaylist", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-            })
-            if(res.ok){
-                const data = await res.json()
-                setData(data["result"])
-                setLoad(false)
-            }
-        }
-        catch (e){
-            console.log(e)
-        }
-    }
-
-    
-    useEffect(() => {
-        if(!verify){
-            navigate("/");
-        }
-    }, [verify]);
-
-    useEffect(() => {
-        getPlaylistData()
-    }, [])
-
     useEffect(() =>{}, [isLoading])
+
+    useEffect(() => {
+        
+        const fetchData = async () => {
+            await getPlaylistItems(); 
+            setLoad(false);          
+        };
+        console.log(data)
+        fetchData();   
+    }, [])
     
     return(
         <>
-            {isLoading ? <Loading /> : <Lists data = {dt}/>}
+            {isLoading ? <Loading /> : <Lists data = {data}/>}
         </>
        
     );

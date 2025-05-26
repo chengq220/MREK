@@ -12,7 +12,11 @@ function Preference() {
     const username = sessionStorage.getItem("username")
 
     useEffect(() => {
-        getPreference()
+        const fetchData = async () => {
+            await getPreference(); 
+            setLoaded(false);          
+        };
+        fetchData()
     }, []);
 
     useEffect(() => {
