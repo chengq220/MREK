@@ -42,7 +42,7 @@ export const AuthProvider = ({children}) => {
   const logout = () => {
     changeToken(null);
     setVerified(false);
-    sessionStorage.removeItem("userDetails");
+    sessionStorage.removeItem("login_token");
     sessionStorage.removeItem("username")
   };
 

@@ -5,6 +5,7 @@ import { useAuth} from '../auth/AuthContext';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import Loading from "../Loading";
+import PopUp from "../PopUp";
 
 function Entry(){
     const [isLove, setLove] = useState('')
@@ -41,13 +42,61 @@ function Entry(){
     );
 }
 
+function NoList(){
+    const [openPopup, setPopup] = useState(false)
+    const handleRemovePopup = () => {
+        setPopup(false)
+    }
+
+    useEffect(() => {
+    }, [openPopup]);
+
+    return(
+        <div className = "w-1/2 mx-auto">
+            <div className = "flex flex-col items-center">
+                <div>
+                    You do not currently have a playlist right now
+                </div>
+                <button
+                    onClick={()=> setPopup(true)}
+                >Create a list</button>
+                <PopUp openPopUp={openPopup} closePopUp={handleRemovePopup} />
+            </div>
+        </div>
+    );
+}
+
 function Lists({data}){
     const [haveList, setHaveList] = useState(false)
+    const getPlaylistItems = async() =>{
+        const payload = {
+            "username" : sessionStorage.getItem("username"),
+            "playlist_name" : "best_playlist"
+        }
+        const res = await fetch("http://localhost:8000/getPlaylistItems", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        if(res.ok){
+            const data = await res.json()
+        }
+        
+    }
+
+
+    useEffect(() => {
+        if(data.length > 0){
+            setHaveList(true)
+        }else{
+            getPlaylistItems()
+        }
+    }, [])
+
     return(
-        <div className="w-1/2 mx-auto">
-            <Entry />
-        </div>
-       
+        <>
+        {haveList ? <div className="w-1/2 mx-auto"><Entry /></div>: <NoList />}
+        </>
     );
 
 }
@@ -60,19 +109,23 @@ function PlayList(){
 
     const getPlaylistData = async ()=>{
         const payload = {
-            "username" : sessionStorage.getItem("username"),
-            "playlist" : ""
+            "username" : sessionStorage.getItem("username")
         }
-        const res = await fetch("http://localhost:8000/getPlaylist", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-        })
-        if(res.ok){
-            setLoad(false)
+        try{
+            const res = await fetch("http://localhost:8000/getPlaylist", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+            })
+            if(res.ok){
+                const data = await res.json()
+                setData(data["result"])
+                setLoad(false)
+            }
         }
-        const data = await res.json()
-        setData(data["result"])
+        catch (e){
+            console.log(e)
+        }
     }
 
     

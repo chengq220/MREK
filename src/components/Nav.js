@@ -9,8 +9,6 @@ function NavUnsigned(){
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">
         <div className="text-lg font-semibold">MusicRecPlus</div>
         <div className="hidden lg:flex gap-6 text-sm">
-          <Link to="/feed" className="hover:text-gray-300">Feed</Link>
-          <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
           <Link to="/login">Login</Link>
         </div>
 

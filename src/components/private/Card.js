@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
+import { FiMinus } from "react-icons/fi";
 import Loading from "../Loading";
 
 const CardDefault = ({ song }) => {
     const addToPlayList = async() =>{
         const payload = {"username":sessionStorage.getItem("username"),
-                        "song": song["idx"]}
+                        "playlist_name": "best_playlist", 
+                        "song_idx": song["idx"]}
         
         const res = await fetch("http://localhost:8000/addToPlaylist", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             })
+        if(res.ok){
+            console.log("added successfully")
+        }else{
+            console.log("error occured")
+        }
     }
 
     return (
