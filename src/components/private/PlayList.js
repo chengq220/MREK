@@ -7,11 +7,8 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import Loading from "../Loading";
 import PopUp from "../PopUp";
 
-function Entry({item, index}){
+function Entry({item}){
     const [isLove, setLove] = useState('')
-    useEffect(() => {
-    }, [isLove]);
-
     const updateLike = () =>{
         setLove(!isLove)
     }
@@ -24,8 +21,8 @@ function Entry({item, index}){
         <div className="bg-red-50 flex flex-row items-center">
             <div className="basis-[30%]">Thumbnail</div> 
             <div className="basis-[50%]">
-                <h1>Song name</h1>
-                <p>Artist name</p>
+                <h1>{item["track_name"]}</h1>
+                <p>{item["artists"]}</p>
             </div>
             <button 
                 onClick={updateLike}
@@ -44,7 +41,7 @@ function Entry({item, index}){
 function List({data}){
     return(
         <>
-            {data.map((item, index) => <Entry item ={item} index = {index}/>)}
+            {data.map((item, index) => <Entry key={index} item ={item}/>)}
         </>
     )
 }
@@ -120,10 +117,10 @@ function PlayList(){
         }
         
     }
+
     useEffect(() =>{}, [isLoading])
 
     useEffect(() => {
-        
         const fetchData = async () => {
             await getPlaylistItems(); 
             setLoad(false);          

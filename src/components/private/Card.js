@@ -7,7 +7,7 @@ const CardDefault = ({ song }) => {
     const addToPlayList = async() =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
-                        "song_idx": song["idx"]}
+                        "song_idx": song["track_id"]}
         
         const res = await fetch("http://localhost:8000/addToPlaylist", {
                 method: "POST",
@@ -55,7 +55,6 @@ function GridDefault(){
                 body: JSON.stringify(userInfo)
             })
             const dat = await res.json()
-            // console.log(dat)
             setData(dat.result)
         }
         catch (e){
