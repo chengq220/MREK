@@ -19,8 +19,8 @@ function NavUnsigned(){
 }
 
 function NavSigned(){
-  const {user, token, login, logout, verify} = useAuth();
-  const username = sessionStorage.getItem("username")
+  const {user, logout} = useAuth();
+  // const username = sessionStorage.getItem("username")
   return(
     <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-10">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">
@@ -31,7 +31,7 @@ function NavSigned(){
           <Link to="/feed" className="hover:text-gray-300">Feed</Link>
           <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
            <div className="dropdown">
-            <button className="dropbtn">{username}</button>
+            <button className="dropbtn">{user}</button>
             <div className="dropdown-content">
               <Link to="/preference">Preference</Link>
               <Link to="/Account">Account</Link>

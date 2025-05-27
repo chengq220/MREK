@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useAuth} from '../context/AuthContext';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import Loading from "../components/Loading";
 import PopUp from "../components/PopUp";
 
 function Entry({item}){
@@ -63,37 +62,16 @@ function NoList(){
                 </div>
                 <button
                     onClick={()=> setPopup(true)}
-                >Create a list</button>
+                >Create a playlist</button>
                 <PopUp openPopUp={openPopup} closePopUp={handleRemovePopup} />
             </div>
         </div>
     );
 }
 
-function Lists({data}){
-    const [haveList, setList] = useState(true)
-
-    useEffect(() =>{
-        if(data.length > 0){
-            setList(true)
-        }else{
-            setList(false)
-        }
-    }, [])
-
-    return(
-        <>
-        {haveList ? <div className="w-1/2 mx-auto"><List data = {data}/></div>: <NoList />}
-        </>
-    );
-
-}
-
-function PlayList(){ 
+function PlayList(){
+    const { user, playlist, verify} = useAuth();
     const navigate = useNavigate();
-    const { token, login, logout, verify} = useAuth();
-    const [isLoading, setLoad] = useState(true)
-    const [data, setData] = useState([])
 
     useEffect(() => {
         if(!verify){
@@ -101,41 +79,12 @@ function PlayList(){
         }
     }, [verify]);
 
-    const getPlaylistItems = async() =>{
-        const payload = {
-            "username" : sessionStorage.getItem("username"),
-            "playlist_name" : "best_playlist"
-        }
-        const res = await fetch("http://localhost:8000/getPlaylistItems", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        })
-        if(res.ok){
-            const data = await res.json()
-            setData(data["result"])
-        }
-        
-    }
-
-    useEffect(() =>{}, [isLoading])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            await getPlaylistItems(); 
-            setLoad(false);          
-        };
-        console.log(data)
-        fetchData();   
-    }, [])
-    
     return(
         <>
-            {isLoading ? <Loading /> : <Lists data = {data}/>}
+            {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist}/></div>: <NoList />}
         </>
-       
     );
-}
 
+}
 
 export default PlayList;

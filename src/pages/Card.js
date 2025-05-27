@@ -4,7 +4,7 @@ import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
 
 const CardDefault = ({ song }) => {
-    const addToPlayList = async() =>{
+    const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
                         "song_idx": song["track_id"]}

@@ -113,19 +113,15 @@ import { useNavigate } from 'react-router-dom';
 
 function Preference() {
     const navigate = useNavigate();
-    const { login, logout, verify} = useAuth();
+    const {user, preference, verify, triggerUpdate} = useAuth();
     const [artist, setArtist] = useState('')
     const [genre, setGenre] = useState('')
-    const [load, setLoaded] = useState(false)
-    const username = sessionStorage.getItem("username")
 
     useEffect(() => {
-        const fetchData = async () => {
-            await getPreference(); 
-            setLoaded(false);          
-        };
-        fetchData()
-    }, []);
+        setGenre(preference["fav_genre"])
+        setArtist(preference["fav_artist"])
+
+    }, [preference]);
 
     useEffect(() => {
         if(!verify){
@@ -133,37 +129,16 @@ function Preference() {
         }
     }, [verify]);
 
-    useEffect(()=>{
-    }, [load]);
-
     const handleArtistChange = (event) => {
-        setArtist(event.target.value)
+        setArtist(event.target.value);
     }
 
     const handleGenreChange = (event) => {
-        setGenre(event.target.value)
-    }
-
-    const getPreference = async() =>{
-        const userinfo = {'user': username}
-        const response = await fetch("http://localhost:8000/getPref", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userinfo)
-        })
-        if(response.ok){
-            let data = await response.json()
-            if( data["res"].length > 0){
-                const dd = data["res"][0]
-                setGenre(dd["fav_genre"])
-                setArtist(dd["fav_artist"])
-                setLoaded(true)
-            }
-        }
+        setGenre(event.target.value);
     }
 
     const submitPreference = async () =>{
-        const preference = {'user': username, 'artist': artist, 'genre': genre}
+        const preference = {'user': user, 'artist': artist, 'genre': genre}
         const response = await fetch("http://localhost:8000/updatePref", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -171,7 +146,8 @@ function Preference() {
         })
         console.log(response)
         if(response.ok){
-            navigate("/feed")
+            triggerUpdate(true);
+            navigate("/feed");
         }
     }
 
