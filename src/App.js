@@ -1,13 +1,13 @@
-import '../css/tailwind.css';
-import Nav from './Nav';
-import Home from './public/Homepage'
-import Feed from './private/Feed';
-import Login from './public/Login';
-import Register from './public/Register';
-import PlayList from './private/PlayList';
-import Preference from './private/Preference'
+import './css/tailwind.css';
+import Nav from './components/Nav';
+import Home from './pages/Homepage'
+import Feed from './pages/Feed';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import PlayList from './pages/PlayList';
+import Preference from './pages/Preference'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from "./auth/auth";
+import { AuthProvider } from "./context/auth";
 
 function App() {
   return (

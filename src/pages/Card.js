@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
-import Loading from "../Loading";
+import Loading from "../components/Loading";
 
 const CardDefault = ({ song }) => {
     const addToPlayList = async() =>{

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useAuth} from '../auth/AuthContext';
+import { useAuth} from '../context/AuthContext';
 
 function Register(){
     const navigate = useNavigate();

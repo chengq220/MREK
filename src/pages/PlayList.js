@@ -1,11 +1,11 @@
-import '../../css/tailwind.css';
+import '../css/tailwind.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { useAuth} from '../auth/AuthContext';
+import { useAuth} from '../context/AuthContext';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import Loading from "../Loading";
-import PopUp from "../PopUp";
+import Loading from "../components/Loading";
+import PopUp from "../components/PopUp";
 
 function Entry({item}){
     const [isLove, setLove] = useState('')
