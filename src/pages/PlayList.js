@@ -70,14 +70,14 @@ function NoList(){
 }
 
 function PlayList(){
-    const { user, playlist, verify} = useAuth();
+    const { playlist, verify, verifyToken} = useAuth();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if(!verify){
-            navigate("/");
-        }
-    }, [verify]);
+    // useEffect(() => {
+    //     if(!verifyToken(sessionStorage.getItem("login_token"))){
+    //         navigate("/");
+    //     }
+    // }, [verify]);
 
     return(
         <>

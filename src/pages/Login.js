@@ -7,15 +7,21 @@ function Login(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const {token, login, logout, verify} = useAuth();
+    const {login, verify, verifyToken} = useAuth();
 
-    useEffect(() => {
-        if(verify){
-            navigate("/feed");
-        }
-        return () => {  
-        };
-    }, [error,verify]);
+    // useEffect(() => {
+    //     const authorize = async () =>{
+    //         await verifyToken();
+    //     }
+    //     if(sessionStorage.getItem("login_token") != null){
+    //         authorize();
+    //     }
+    //     if(verify){
+    //         navigate("/feed");
+    //     }
+    //     return () => {  
+    //     };
+    // }, [error,verify]);
 
     const usernameChange = (event) => {
         setUsername(event.target.value)

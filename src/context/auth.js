@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({children}) => {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState("");
   const [playlist, setPlaylist] = useState([]);
   const [preference, setPreference] = useState('');
-  const [token, changeToken] = useState('');
+  const [token, changeToken] = useState("");
   const [verify, setVerified] = useState(false);
   const [update, triggerUpdate] = useState(false);
 
@@ -80,26 +80,39 @@ export const AuthProvider = ({children}) => {
       
   }
 
-  useEffect(() => {
-    setUser(sessionStorage.getItem("username"));
-    changeToken(sessionStorage.getItem("login_token"));
-  }, []);
-
-  useEffect(() => {
-    if(token && user){
-      const getData = async () =>{
-        await getPreference();
-        await getPlaylistItems();
+  const verifyToken = async () =>{
+    if(token){
+      const payload = {
+        "token":sessionStorage.getItem("login_token"),
+        "username":sessionStorage.getItem("username") 
       }
-      getData();
-      setVerified(true);
-    }else{
-      setVerified(false);
+      const res = await fetch("http://localhost:8000/verifyToken", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+      });
+      if(res.ok){
+        const dt = await res.json()
+        setVerified(dt)
+        setUser(sessionStorage.getItem("username"))
+        return dt["result"]
+      }
     }
-  }, [token, update]);
+    return false;
+  }
+
+  // useEffect(() => {
+  //   if(token.length != ""){
+  //     const getData = async() =>{
+  //       await getPreference();
+  //       await getPlaylistItems();
+  //     }
+  //     getData();
+  //   }
+  // }, [verify]);
 
   return (
-    <AuthContext.Provider value={{ user, playlist, preference, token, verify, login, logout, triggerUpdate }}>
+    <AuthContext.Provider value={{ user, playlist, preference, token, verify, login, logout, verifyToken, triggerUpdate }}>
       {children}
     </AuthContext.Provider>
   );

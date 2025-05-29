@@ -7,16 +7,14 @@ function Register(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
-    const { token, login, logout, verify} = useAuth();
+    const {verify, verifyToken} = useAuth();
 
-    useEffect(() => {
-        if(verify){
-            navigate("/feed");
-        }
-        return () => {
-            
-        };
-    }, [error, verify]);
+    // useEffect(() => {
+    //     if(verify && verifyToken()){
+    //         navigate("/feed");
+    //     }
+    //     return () => {};
+    // }, [error, verify]);
 
     const usernameChange = (event) => {
         setUsername(event.target.value)

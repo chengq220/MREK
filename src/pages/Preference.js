@@ -124,11 +124,11 @@ function Preference() {
 
     }, [preference]);
 
-    useEffect(() => {
-        if(!verify){
-            navigate("/");
-        }
-    }, [verify]);
+    // useEffect(() => {
+    //     if(!verify){
+    //         navigate("/");
+    //     }
+    // }, [verify]);
 
     const handleArtistChange = (event) => {
         setArtist(event.target.value);

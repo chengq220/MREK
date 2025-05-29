@@ -2,6 +2,7 @@ import '../css/tailwind.css';
 import '../css/navbar.css';
 import { Link } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react'
 
 function NavUnsigned(){
   return(
@@ -20,7 +21,6 @@ function NavUnsigned(){
 
 function NavSigned(){
   const {user, logout} = useAuth();
-  // const username = sessionStorage.getItem("username")
   return(
     <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-10">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">
@@ -45,7 +45,7 @@ function NavSigned(){
 }
 
 function Nav(){
-  const {user, token, login, logout, verify} = useAuth();
+  const {verify} = useAuth();
   return(
     <>
       {verify  ? <NavSigned /> : <NavUnsigned />}
