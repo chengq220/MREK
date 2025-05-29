@@ -14,22 +14,19 @@ function Register(){
             navigate("/feed");
         }
         return () => {
-            console.log("Cleanup if needed");
+            
         };
     }, [error, verify]);
 
     const usernameChange = (event) => {
         setUsername(event.target.value)
-        console.log(username)
     }
 
     const passwordChange = (event) => {
         setPassword(event.target.value)
-        console.log(password)
     }
 
     const registerUser = async (event) =>{
-        console.log("hi ive been clicked")
         event.preventDefault()
         if (username == "" || password == "") {
             return;

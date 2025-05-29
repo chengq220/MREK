@@ -50,7 +50,8 @@ function GridDefault(){
     const fetchData = async () => {
         try{
             const userInfo = {
-                'username':sessionStorage.getItem("username")
+                'username':sessionStorage.getItem("username"),
+                'hasPref': data ? true : false
             }
             const res = await fetch("http://localhost:8000/getMusic", {
                 method: "POST",
