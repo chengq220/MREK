@@ -46,6 +46,7 @@ function NavSigned(){
 
 function Nav(){
   const {verify} = useAuth();
+  useEffect(() => {}, [verify])
   return(
     <>
       {verify  ? <NavSigned /> : <NavUnsigned />}

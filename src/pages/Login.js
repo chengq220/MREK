@@ -1,27 +1,26 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth} from '../context/AuthContext';
+import Loading from '../components/Loading';
 
 function Login(){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const {login, verify, verifyToken} = useAuth();
+    const {login, isLoading} = useAuth();
 
-    // useEffect(() => {
-    //     const authorize = async () =>{
-    //         await verifyToken();
-    //     }
-    //     if(sessionStorage.getItem("login_token") != null){
-    //         authorize();
-    //     }
-    //     if(verify){
-    //         navigate("/feed");
-    //     }
-    //     return () => {  
-    //     };
-    // }, [error,verify]);
+    useEffect(() => {}, [isLoading])
+
+    const logInWrap = async () =>{
+        const res = await login(username, password)
+        if (res != 1){
+            setError(res);
+        }
+        else{
+            navigate("/feed");
+        }
+    };
 
     const usernameChange = (event) => {
         setUsername(event.target.value)
@@ -31,28 +30,15 @@ function Login(){
         setPassword(event.target.value)
     }
 
-    const logInWrap = async () =>{
-        const res = await login(username, password)
-        if (res != 1){
-            setError(res);
-        }else{
-            if(true){
-                navigate("/preference");
-            }else{
-                navigate("/feed");
-            }
-        }
-    };
-
     const errorDisplay = () => {
       switch(error) {
         case 101: return <div className="text-red-100">Incorrect username/password</div>;
         case 102: return <div className="text-red-100">Empty username or password</div>;
         case 103: return <div className="text-red-100">Error connecting to the server</div>;
-
         default:  return null;
       }
     }
+
     return(
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -89,6 +75,7 @@ function Login(){
                                 Sign in
                     </button>
                 </div>
+                {isLoading ? <Loading /> : null}
                 </form>
 
                 <p className="mt-10 text-center text-sm/6 text-gray-500">
