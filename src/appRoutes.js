@@ -36,7 +36,7 @@ function AppRoutes() {
   }
 
   return (
-  <>
+  <div className = "flex flex-col">
     <Nav />
     <Routes>
       <Route path = "/" element = {<Home/>} />
@@ -50,7 +50,7 @@ function AppRoutes() {
           <Route path="/register" element={<Register />} />
         </Route>
     </Routes>
-  </>
+  </div>
   );
 }
 
