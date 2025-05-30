@@ -6,8 +6,8 @@ export const AuthProvider = ({children}) => {
   const [playlist, setPlaylist] = useState([]);
   const [preference, setPreference] = useState('');
   const [token, changeToken] = useState("");
-  const [verify, setVerified] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [verify, setVerified] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
 
   const login = async (username, password) => {
       setIsLoading(true)
@@ -91,7 +91,7 @@ export const AuthProvider = ({children}) => {
   }
 
   const verifyToken = async () =>{
-    setIsLoading(true)
+    setIsLoading(true);
     const tk = sessionStorage.getItem("login_token");
     const us = sessionStorage.getItem("username");
     if(tk != null){
@@ -109,21 +109,21 @@ export const AuthProvider = ({children}) => {
           const dt = await res.json();
           const vfy = dt["result"];
           if(vfy){
-            console.log("verified")
             setUser(sessionStorage.getItem("username"));
             changeToken(tk);
             setVerified(true);
             await fetchUserData();
           }else{
-            console.log("not verified")
             setVerified(false);
           }
           setIsLoading(false);
+          return vfy;
         }
       }catch(error){}
     }    
     setIsLoading(false);
     setVerified(false);
+    return false;
   }
 
   useEffect(() => {

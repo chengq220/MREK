@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 
 function NavUnsigned(){
   return(
-    <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-10">
+    <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-1">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">
         <div className="text-lg font-semibold">
            <Link to="/">MusicRecPlus</Link>
@@ -22,7 +22,7 @@ function NavUnsigned(){
 function NavSigned(){
   const {user, logout} = useAuth();
   return(
-    <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-10">
+    <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-1">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">
         <div className="text-lg font-semibold">
            <Link to="/">MusicRecPlus</Link>
