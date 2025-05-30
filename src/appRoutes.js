@@ -11,7 +11,7 @@ import { useAuth } from './context/AuthContext';
 import { useEffect } from "react";
 
 function AppRoutes() {
-  const {verify, isLoading, verifyToken} = useAuth();
+  const {verify, token, verifyToken} = useAuth();
   useEffect(() =>{
     const authenticate = async () =>{
       await verifyToken();
@@ -19,10 +19,10 @@ function AppRoutes() {
     if(sessionStorage.getItem("login_token") != null){
       authenticate();
     }
-  }, []);
+  }, [token]);
   
   function PrivateRoute(){
-    return verify ? <Navigate to="/" replace /> : <Outlet />;
+    return verify ? <Outlet />: <Navigate to="/" replace /> ;
   }
 
   function RestricteRoute(){
@@ -32,7 +32,6 @@ function AppRoutes() {
   return (
     <>
         <Nav />
-        {isLoading ? <div>Loading data</div>: null}
         <Routes>
             <Route path = "/" element = {<Home/>} />
                 <Route element={<PrivateRoute />}>

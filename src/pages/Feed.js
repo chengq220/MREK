@@ -83,15 +83,6 @@ function GridDefault(){
 }
 
 function Feed(){
-    const navigate = useNavigate();
-    const {verify, verifyToken} = useAuth();
-
-    // useEffect(() => {
-    //     if(!verifyToken(sessionStorage.getItem("login_token"))){
-    //         navigate("/");
-    //     }
-    // }, [verify]);
-
     return(
         <div className="w-1/2 mx-auto">
             <GridDefault/>

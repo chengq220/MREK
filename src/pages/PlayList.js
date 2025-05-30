@@ -73,12 +73,6 @@ function PlayList(){
     const { playlist, verify, verifyToken} = useAuth();
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if(!verifyToken(sessionStorage.getItem("login_token"))){
-    //         navigate("/");
-    //     }
-    // }, [verify]);
-
     return(
         <>
             {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist}/></div>: <NoList />}
