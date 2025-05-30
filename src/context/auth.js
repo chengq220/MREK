@@ -90,31 +90,46 @@ export const AuthProvider = ({children}) => {
     }
   }
 
-
   const verifyToken = async () =>{
     setIsLoading(true)
-    if(token){
+    const tk = sessionStorage.getItem("login_token");
+    const us = sessionStorage.getItem("username");
+    if(tk != null){
       const payload = {
-        "token":sessionStorage.getItem("login_token"),
-        "username":sessionStorage.getItem("username") 
+        "token":tk,
+        "username":us
       }
-      const res = await fetch("http://localhost:8000/verifyToken", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-      });
-      if(res.ok){
-        const dt = await res.json();
-        setVerified(dt);
-        setUser(sessionStorage.getItem("username"));
-        await fetchUserData();
-        setIsLoading(false);
-        return dt["result"];
-      }
-    }
+      try{
+        const res = await fetch("http://localhost:8000/verifyToken", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        if(res.ok){
+          const dt = await res.json();
+          const vfy = dt["result"];
+          if(vfy){
+            console.log("verified")
+            setUser(sessionStorage.getItem("username"));
+            changeToken(tk);
+            setVerified(true);
+            await fetchUserData();
+          }else{
+            console.log("not verified")
+            setVerified(false);
+          }
+          setIsLoading(false);
+        }
+      }catch(error){}
+    }    
     setIsLoading(false);
-    return false;
+    setVerified(false);
   }
+
+  useEffect(() => {
+    setUser(sessionStorage.getItem("username"))
+    changeToken(sessionStorage.getItem("login_token"));
+  }, [])
 
   return (
     <AuthContext.Provider value={{ user, playlist, preference, token, verify, login, isLoading, logout, verifyToken }}>
