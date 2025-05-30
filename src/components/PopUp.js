@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../css/tailwind.css';
 
 const PopUp = ({ openPopUp, closePopUp }) => {
 

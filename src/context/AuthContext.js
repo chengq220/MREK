@@ -10,7 +10,6 @@ export const AuthContext = createContext({
   login: () => {},
   logout: () => {},
   verifyToken: () => {},
-  triggerUpdate: () => {}
 });
 
 export const useAuth = () => {

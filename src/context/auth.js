@@ -7,7 +7,6 @@ export const AuthProvider = ({children}) => {
   const [preference, setPreference] = useState('');
   const [token, changeToken] = useState("");
   const [verify, setVerified] = useState(false);
-  const [update, triggerUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const login = async (username, password) => {
@@ -51,10 +50,12 @@ export const AuthProvider = ({children}) => {
   };
 
   const logout = () => {
+    setIsLoading(true);
     changeToken(null);
     setVerified(false);
     sessionStorage.removeItem("login_token");
-    sessionStorage.removeItem("username")
+    sessionStorage.removeItem("username");
+    setIsLoading(false);
   };
 
   const fetchUserData = async() => {
@@ -116,7 +117,7 @@ export const AuthProvider = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, playlist, preference, token, verify, login, isLoading, logout, verifyToken, triggerUpdate }}>
+    <AuthContext.Provider value={{ user, playlist, preference, token, verify, login, isLoading, logout, verifyToken }}>
       {children}
     </AuthContext.Provider>
   );
