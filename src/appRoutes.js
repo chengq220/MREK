@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import PlayList from './pages/PlayList';
 import Preference from './pages/Preference'
 import Loading from './components/Loading';
+import Search from './pages/Search';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { useEffect } from "react";
@@ -40,15 +41,16 @@ function AppRoutes() {
     <Nav />
     <Routes>
       <Route path = "/" element = {<Home/>} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/preference" element={<Preference />} />
-          <Route path="/playlist" element={<PlayList />} />
-        </Route>
-        <Route element={<RestricteRoute />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
+      <Route path = "/search" element = {<Search/>} />
+      <Route element={<PrivateRoute />}>
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/preference" element={<Preference />} />
+        <Route path="/playlist" element={<PlayList />} />
+      </Route>
+      <Route element={<RestricteRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
     </Routes>
   </div>
   );

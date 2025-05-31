@@ -59,11 +59,11 @@ function Register(){
                         <form className="space-y-4 md:space-y-6" action="#">
                             <div>
                                 { error ? <div className="text-red-100">Username Taken</div> : null }
-                                <label for="email" className="block mb-2 text-sm font-semibold">Username</label>
+                                <label className="block mb-2 text-sm font-semibold">Username</label>
                                 <input type="email" name="email" id="email" onChange={usernameChange} required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
                             </div>
                             <div>
-                                <label for="password" className="block mb-2 text-sm font-semibold">Password</label>
+                                <label className="block mb-2 text-sm font-semibold">Password</label>
                                 <input type="password" name="password" id="password" onChange={passwordChange} required placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:border-blue-500" required=""/>
                             </div>
                             <button type="submit" onClick={registerUser} className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-indigo-600">Create an account</button>

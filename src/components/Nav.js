@@ -11,7 +11,7 @@ function NavUnsigned(){
            <Link to="/">MusicRecPlus</Link>
         </div>
         <div className="hidden lg:flex gap-6 text-sm">
-          <Link to="/">Search</Link>
+          <Link to="/search">Search</Link>
           <Link to="/login">Login</Link>
         </div>
       </div>
@@ -28,6 +28,7 @@ function NavSigned(){
            <Link to="/">MusicRecPlus</Link>
         </div>
         <div className="hidden lg:flex gap-6 text-sm">
+          <Link to="/search">Search</Link>
           <Link to="/feed" className="hover:text-gray-300">Feed</Link>
           <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
            <div className="dropdown">
