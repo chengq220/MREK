@@ -111,45 +111,45 @@ import Block from '../components/Grid';
 
 // export default Preference;
 
-function Preference() {
-    const navigate = useNavigate();
-    const {user, preference, verify, triggerUpdate} = useAuth();
-    const [artist, setArtist] = useState('')
-    const [genre, setGenre] = useState('')
+// function Preference() {
+//     const navigate = useNavigate();
+//     const {user, preference, verify, triggerUpdate} = useAuth();
+//     const [artist, setArtist] = useState('')
+//     const [genre, setGenre] = useState('')
 
-    useEffect(() => {
-        setGenre(preference["fav_genre"])
-        setArtist(preference["fav_artist"])
+//     useEffect(() => {
+//         setGenre(preference["fav_genre"])
+//         setArtist(preference["fav_artist"])
 
-    }, [preference]);
+//     }, [preference]);
 
-    const handleArtistChange = (event) => {
-        setArtist(event.target.value);
-    }
+//     const handleArtistChange = (event) => {
+//         setArtist(event.target.value);
+//     }
 
-    const handleGenreChange = (event) => {
-        setGenre(event.target.value);
-    }
+//     const handleGenreChange = (event) => {
+//         setGenre(event.target.value);
+//     }
 
-    const submitPreference = async () =>{
-        const preference = {'user': user, 'artist': artist, 'genre': genre}
-        const response = await fetch("http://localhost:8000/updatePref", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(preference)
-        })
-        console.log(response)
-        if(response.ok){
-            triggerUpdate(true);
-            navigate("/feed");
-        }
-    }
+//     const submitPreference = async () =>{
+//         const preference = {'user': user, 'artist': artist, 'genre': genre}
+//         const response = await fetch("http://localhost:8000/updatePref", {
+//               method: "POST",
+//               headers: { "Content-Type": "application/json" },
+//               body: JSON.stringify(preference)
+//         })
+//         console.log(response)
+//         if(response.ok){
+//             triggerUpdate(true);
+//             navigate("/feed");
+//         }
+//     }
 
-    return (
-        <div className="flex h-screen w-1/2 mx-auto">
-           <Block />
-        </div>
-    );
-}
+//     return (
+//         <div className="flex h-screen w-1/2 mx-auto">
+//            <Block />
+//         </div>
+//     );
+// }
 
-export default Preference;
+// export default Preference;

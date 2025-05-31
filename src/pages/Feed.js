@@ -5,7 +5,7 @@ import Loading from "../components/Loading";
 
 const CardDefault = ({ song }) => {
     const [isAdded, setIsAdded] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 

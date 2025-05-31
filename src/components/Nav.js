@@ -30,11 +30,10 @@ function NavSigned(){
         <div className="hidden lg:flex gap-6 text-sm">
           <Link to="/search">Search</Link>
           <Link to="/feed" className="hover:text-gray-300">Feed</Link>
-          <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
+          <Link to="/playlist" state={{update:true}} className="hover:text-gray-300">Playlist</Link>
            <div className="dropdown">
             <button className="dropbtn">{user}</button>
             <div className="dropdown-content">
-              <Link to="/preference">Preference</Link>
               <Link to="/Account">Account</Link>
               <Link onClick={logout}>Logout</Link>
             </div>

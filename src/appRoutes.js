@@ -5,7 +5,6 @@ import Feed from './pages/Feed';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PlayList from './pages/PlayList';
-import Preference from './pages/Preference'
 import Loading from './components/Loading';
 import Search from './pages/Search';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
@@ -44,8 +43,7 @@ function AppRoutes() {
       <Route path = "/search" element = {<Search/>} />
       <Route element={<PrivateRoute />}>
         <Route path="/feed" element={<Feed />} />
-        <Route path="/preference" element={<Preference />} />
-        <Route path="/playlist" element={<PlayList />} />
+        <Route path="/playlist" element={<PlayList />} state={{update: true}}/>
       </Route>
       <Route element={<RestricteRoute />}>
         <Route path="/login" element={<Login />} />

@@ -4,7 +4,6 @@ import { AuthContext } from "./AuthContext";
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState("");
   const [playlist, setPlaylist] = useState([]);
-  const [preference, setPreference] = useState('');
   const [token, changeToken] = useState("");
   const [verify, setVerified] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
@@ -32,7 +31,7 @@ export const AuthProvider = ({children}) => {
             sessionStorage.setItem("username", userInfo["username"]);
             changeToken(data["auth_token"]);
             setUser(userInfo["username"]);
-            await fetchUserData();
+            await fetchPlaylist();
             setIsLoading(false)
             return 1;
           }
@@ -58,23 +57,12 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   };
 
-  const fetchUserData = async() => {
+
+  const fetchPlaylist = async() =>{
     try{
-      const userinfo = {'user': user};
-      const response = await fetch("http://localhost:8000/getPref", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userinfo)
-      })
-      if(response.ok){
-          let data = await response.json();
-          if( data["res"].length > 0){
-              setPreference(data["res"][0]);
-          }
-      }
       const payload = {
-          "username" : user,
-          "playlist_name" : "best_playlist"
+            "username" : user,
+            "playlist_name" : "best_playlist"
       };
       const res = await fetch("http://localhost:8000/getPlaylistItems", {
           method: "POST",
@@ -112,7 +100,7 @@ export const AuthProvider = ({children}) => {
             setUser(sessionStorage.getItem("username"));
             changeToken(tk);
             setVerified(true);
-            await fetchUserData();
+            await fetchPlaylist();
           }else{
             setVerified(false);
           }
@@ -126,13 +114,19 @@ export const AuthProvider = ({children}) => {
     return false;
   }
 
+  const updatePlaylist = async () => {
+    setIsLoading(true);
+    await fetchPlaylist;
+    setIsLoading(false);
+  }
+
   useEffect(() => {
     setUser(sessionStorage.getItem("username"))
     changeToken(sessionStorage.getItem("login_token"));
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, playlist, preference, token, verify, login, isLoading, logout, verifyToken }}>
+    <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, verifyToken, updatePlaylist }}>
       {children}
     </AuthContext.Provider>
   );

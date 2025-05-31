@@ -1,9 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth} from '../context/AuthContext';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import PopUp from "../components/PopUp";
 
 function Entry({item}){
     const [isLove, setLove] = useState('')
@@ -45,32 +43,20 @@ function List({data}){
 }
 
 function NoList(){
-    const [openPopup, setPopup] = useState(false)
-    const handleRemovePopup = () => {
-        setPopup(false)
-    }
-
-    useEffect(() => {
-    }, [openPopup]);
-
     return(
         <div className = "w-1/2 mx-auto">
             <div className = "flex flex-col items-center">
                 <div>
                     You do not currently have a playlist right now
                 </div>
-                <button
-                    onClick={()=> setPopup(true)}
-                >Create a playlist</button>
-                <PopUp openPopUp={openPopup} closePopUp={handleRemovePopup} />
+                <div>Create a playlist by adding songs from Search</div>
             </div>
         </div>
     );
 }
 
 function PlayList(){
-    const { playlist, verify, verifyToken} = useAuth();
-    const navigate = useNavigate();
+    const { playlist, updatePlaylist} = useAuth();
 
     return(
         <>
