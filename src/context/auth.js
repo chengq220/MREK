@@ -126,7 +126,7 @@ export const AuthProvider = ({children}) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, verifyToken, updatePlaylist }}>
+    <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, verifyToken, updatePlaylist, setPlaylist }}>
       {children}
     </AuthContext.Provider>
   );
