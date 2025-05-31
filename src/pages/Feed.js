@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth} from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
