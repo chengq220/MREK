@@ -4,6 +4,8 @@ import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
 
 const CardDefault = ({ song }) => {
+    const [isAdded, setIsAdded] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
@@ -18,8 +20,37 @@ const CardDefault = ({ song }) => {
             console.log("added successfully")
         }else{
             console.log("error occured")
-        }
-    }
+        };
+    };
+
+    const deleteFromPlayList = async () =>{
+        const payload = {"username":sessionStorage.getItem("username"),
+                        "playlist_name": "best_playlist", 
+                        "song_idx": song["track_id"]}
+        
+        const res = await fetch("http://localhost:8000/deleteFromPlaylist", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+        if(res.ok){
+            console.log("deleted successfully")
+        }else{
+            console.log("error occured")
+        };
+    };
+
+    const clickAddDel = async () => {
+        setIsLoading(true);
+        if(isAdded){
+            await deleteFromPlayList();
+            setIsAdded(false);
+        }else{
+            await addToPlayList();
+            setIsAdded(true)
+        };
+        setIsLoading(false);
+    };
 
     return (
         <div className="bg-white shadow-md rounded p-4 h-full flex flex-col justify-between">
@@ -28,9 +59,9 @@ const CardDefault = ({ song }) => {
             <p className="text-sm text-gray-500">{song['track_genre']}</p>
             <div className="flex justify-end">
                 <button 
-                onClick = {addToPlayList}
-                className="bg-blue-500 text-white px-4 py-2 rounded">
-                    <IoMdAdd />
+                onClick = {clickAddDel}
+                className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 py-2 rounded`}>
+                    {isAdded? <FiMinus />: <IoMdAdd />}
                 </button>
             </div>
         </div>
