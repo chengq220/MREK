@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
+import { useAuth} from '../context/AuthContext';
 
 const CardDefault = ({ song }) => {
     const [isAdded, setIsAdded] = useState(false);
@@ -70,6 +71,7 @@ const CardDefault = ({ song }) => {
  
 function GridDefault(){
     const [data, setData] = useState(null);
+    const {playlist} = useAuth();
 
     useEffect(() => {
         fetchData();
@@ -79,7 +81,7 @@ function GridDefault(){
         try{
             const userInfo = {
                 'username':sessionStorage.getItem("username"),
-                'hasPref': data ? true : false
+                'hasPref': playlist ? true : false
             }
             const res = await fetch("http://localhost:8000/getMusic", {
                 method: "POST",
