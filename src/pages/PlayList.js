@@ -76,17 +76,20 @@ function PlayList(){
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
                         "song_idx": item["track_id"]}
-        
-        const res = await fetch("http://localhost:8000/deleteFromPlaylist", {
+        try{
+            const res = await fetch("http://localhost:8000/deleteFromPlaylist", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             })
-        if(res.ok){
-            console.log("deleted successfully")
-        }else{
-            console.log("error occured")
-        };
+            if(res.ok){
+                console.log("deleted successfully")
+            }else{
+                console.log("error occured")
+            };
+        }catch(error){
+            console.log("server side error");
+        }
     };
 
     if(isLoading){

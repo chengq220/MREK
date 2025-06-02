@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import List from '../components/List';
 
 function Search(){
@@ -44,14 +44,16 @@ function Search(){
                 });
                 if(res.ok){
                     const data = await res.json();
-                    setData(data);
-                    console.log(data);
+                    setData(data["result"]);
                 }
             }catch(error){
-                console.log("error caught")
+                console.log("server error caught")
+            }
+            finally{
+                setIsLoading(false);
             };
         }
-        setIsLoading(false);
+        
     }
 
     return (
@@ -102,12 +104,13 @@ function Search(){
                         </button>
                     </div>
                 </div>
-                {isLoading? <List data = {snapShot}/> : <List data={data}/>}
+                <div className="py-10">
+                    {isLoading? <List data = {snapShot}/> : <List data={data}/>}
+                </div>
+                
             </div>
         </div>
     );
 };
-
-
 
 export default Search;
