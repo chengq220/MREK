@@ -1,9 +1,13 @@
 import {useState} from 'react';
+import List from '../components/List';
 
 function Search(){
     const [isOpen, setIsOpen] = useState(false);
     const [category, setCategory] = useState("Song");
     const [query, setQuery] = useState("");
+    const [snapShot, setSnapShot] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState([]);
     
     const toggleSelect = () => {
         setIsOpen(!isOpen);
@@ -26,13 +30,29 @@ function Search(){
     }
 
     const submit = async () =>{
+        setIsLoading(true);
+        setSnapShot(structuredClone(data));
         if(query != ""){
-            console.log("searching for the query")
-            console.log(query);
+            console.log(category);
+            const payload = {"category": category,
+                        "query": query}
+            try{
+                const res = await fetch("http://localhost:8000/search", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                if(res.ok){
+                    const data = await res.json();
+                    setData(data);
+                    console.log(data);
+                }
+            }catch(error){
+                console.log("error caught")
+            };
         }
+        setIsLoading(false);
     }
-
-    
 
     return (
         <div id="container"
@@ -82,6 +102,7 @@ function Search(){
                         </button>
                     </div>
                 </div>
+                {isLoading? <List data = {snapShot}/> : <List data={data}/>}
             </div>
         </div>
     );
