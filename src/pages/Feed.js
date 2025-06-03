@@ -3,10 +3,12 @@ import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
 import { useAuth} from '../context/AuthContext';
+import "../css/card.css";
 
 const CardDefault = ({ song }) => {
     const [isAdded, setIsAdded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isFront, setIsFront] = useState(true);
     const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
@@ -57,7 +59,10 @@ const CardDefault = ({ song }) => {
     };
 
     return (
-        <div className="bg-white shadow-md rounded p-4 h-full flex flex-col justify-between rounded-xl">
+         <div className="bg-white shadow-md rounded p-4 h-full flex flex-col justify-between rounded-xl">
+            <div>
+                <img className="rounded-xl" src={song["thumbnail"]} alt="thumbnail"/>
+            </div>
             <h2 className="text-lg font-bold">{song['track_name']}</h2>
             <p>{song['artists']}</p>
             <p className="text-sm text-gray-500">{song['track_genre']}</p>
@@ -105,8 +110,9 @@ function GridDefault(){
         )
     }
     return(
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-4 py-10 auto-cols-fr">
-            {data.map((item, index) => <CardDefault
+        <div 
+            className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-4 md:grid-rows-4 gap-6 px-4 py-10 auto-cols-fr">
+            {data.map((item, index) => <CardDefault className="w-1/4 h-1/3"
                 key={index}
                 song={item}
                 />
