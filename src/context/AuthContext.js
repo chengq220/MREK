@@ -7,6 +7,7 @@ export const AuthContext = createContext({
   verify: null,
   isLoading: null, 
   login: () => {},
+  register: () => {},
   logout: () => {},
   verifyToken: () => {},
   updatePlaylist: () => {},

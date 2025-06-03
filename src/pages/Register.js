@@ -1,11 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import timeout from '../utils/time';
 
 function Register(){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isRegistering, setIsRegistering] = useState('');
     const [error, setError] = useState(false);
+    const {register} = useAuth();
 
     const usernameChange = (event) => {
         setUsername(event.target.value)
@@ -17,34 +21,18 @@ function Register(){
 
     const registerUser = async (event) =>{
         event.preventDefault()
-        if (username == "" || password == "") {
-            return;
+        setIsRegistering(true);
+        const res = await register(username, password);
+        await timeout(500);
+        if (res != ''){
+            setError(res);
+            setIsRegistering(false);
+        }else{
+            setError('');
+            setIsRegistering(false);
+            navigate("/login");
         }
-
-        try {
-            const userInfo = {
-                'username':username,
-                'password':password
-            }
-            const response = await fetch("http://localhost:8000/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userInfo)
-            })
-            if (response.ok) {
-                console.log("successfully created uesrs")
-                setError(false)
-                navigate("/login");
-            }
-            else if(response.status == 101){
-                console.log("username taken")
-                setError(true)
-            }
-        }
-        catch (error){
-            console.log(error)
-            setError(true)
-        }
+        
     };
 
     return(
@@ -55,17 +43,36 @@ function Register(){
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                             <h2 className="text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create an account</h2>
                         </div>
-                        <form className="space-y-4 md:space-y-6" action="#">
+                        <form 
+                            className="space-y-4 md:space-y-6"
+                            onSubmit={registerUser}>
                             <div>
-                                { error ? <div className="text-red-100">Username Taken</div> : null }
                                 <label className="block mb-2 text-sm font-semibold">Username</label>
-                                <input type="email" name="email" id="email" onChange={usernameChange} required className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
+                                <input type="email" name="email" id="email" onChange={usernameChange} required 
+                                    className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500 ${error? "border-2 border-red-400" : ""}`}/>
                             </div>
                             <div>
                                 <label className="block mb-2 text-sm font-semibold">Password</label>
-                                <input type="password" name="password" id="password" onChange={passwordChange} required placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:border-blue-500" required=""/>
+                                <input type="password" name="password" id="password" onChange={passwordChange} required 
+                                    className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500 ${error? "border-2 border-red-400" : ""}`}/>
                             </div>
-                            <button type="submit" onClick={registerUser} className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-indigo-600">Create an account</button>
+                            {isRegistering?
+                            <div className="flex flex-row bg-gray-600 rounded-xl align-items justify-center">
+                                <button 
+                                    className="p-4 cursor-not-allowed text-white bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                            Registering
+                                </button>
+                                <div role="status">
+                                    <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                                    </svg>
+                                </div>
+                            </div>:  
+                            <button type="submit" 
+                                    className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-indigo-600">
+                                        Register
+                            </button>}
                             <p className="ext-sm/6 text-gray-500 ">
                                 Already have an account? <Link to="/login" className="font-semibold text-indigo-600 hover:underline">Login here</Link>
                             </p>

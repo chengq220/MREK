@@ -9,11 +9,6 @@ export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(null);
 
   const login = async (username, password) => {
-      setIsLoading(true)
-      if (username == "" || password == "") {
-          setIsLoading(false)
-          return 102; //error for empty username or password
-      }
       try {
           const userInfo = {
               'username':username,
@@ -32,20 +27,39 @@ export const AuthProvider = ({children}) => {
             changeToken(data["auth_token"]);
             setUser(userInfo["username"]);
             await fetchPlaylist();
-            setIsLoading(false)
-            return 1;
+            setIsLoading(false);
+            return '';
+          }else{
+            return data["detail"];
           }
-          else if(response.status == 101){
-              setIsLoading(false)
-              return 101; // Error for unknown username/password
-          };
       }
       catch (error){
-        logout()
-        setIsLoading(false)
-        return 103; // other errors such as failing to connect to server
+        return "Failed to connect to the server";
       }
-      
+  };
+
+  const register = async (username, password) =>{
+    try {
+        const userInfo = {
+            'username':username,
+            'password':password
+        }
+        const response = await fetch("http://localhost:8000/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userInfo)
+        })
+        const data = await response.json();
+        if (response.ok) {
+            return ""
+        }
+        else{
+            return data["detail"];
+        }
+    }
+    catch (error){
+        return "Failed to connect to the server";
+    }
   };
 
   const logout = () => {
@@ -56,7 +70,6 @@ export const AuthProvider = ({children}) => {
     sessionStorage.removeItem("username");
     setIsLoading(false);
   };
-
 
   const fetchPlaylist = async() =>{
     try{
@@ -107,7 +120,9 @@ export const AuthProvider = ({children}) => {
           setIsLoading(false);
           return vfy;
         }
-      }catch(error){}
+      }catch(error){
+        return 101;
+      }
     }    
     setIsLoading(false);
     setVerified(false);
@@ -126,7 +141,7 @@ export const AuthProvider = ({children}) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, verifyToken, updatePlaylist, setPlaylist }}>
+    <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, register, verifyToken, updatePlaylist, setPlaylist }}>
       {children}
     </AuthContext.Provider>
   );
