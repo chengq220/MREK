@@ -14,11 +14,13 @@ function Entry({item, deleteItem}){
     }
     
     return(
-        <div className="bg-red-50 flex flex-row items-center">
-            <div className="basis-[30%]">Thumbnail</div> 
+        <div className="flex flex-row items-center h-24 rounded-lg overflow-hidden">
+            <div className = "basis-[30%] flex justify-center">
+                <img className="object-scale-down h-20 w-20 rounded-xl border" src={item["thumbnail"]} alt="thumbnail"/>
+            </div>
             <div className="basis-[50%]">
-                <h1>{item["track_name"]}</h1>
-                <p>{item["artists"]}</p>
+                <h1 className="font-semibold">{item["track_name"]}</h1>
+                <p className="text-gray-400">{item["artists"]}</p>
             </div>
             <button 
                 onClick={updateLike}
@@ -36,15 +38,15 @@ function Entry({item, deleteItem}){
 
 function List({data, deleteItem}){
     return(
-        <>
+        <div className="py-10">
             {data.map((item, index) => <Entry key={index} item ={item} deleteItem = {() => deleteItem(index)}/>)}
-        </>
+        </div>
     )
 }
 
 function NoList(){
     return(
-        <div className = "w-1/2 mx-auto">
+        <div className = "w-1/2 mx-auto py-10">
             <div className = "flex flex-col items-center">
                 <div>
                     You do not currently have a playlist right now
@@ -56,7 +58,7 @@ function NoList(){
 }
 
 function PlayList(){
-    const{ playlist, setPlaylist, updatePlaylist} = useAuth();
+    const{ playlist, setPlaylist} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [prevPlayList, setPrevPlayList] = useState([]);
 

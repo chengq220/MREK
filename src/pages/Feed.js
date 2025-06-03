@@ -57,7 +57,7 @@ const CardDefault = ({ song }) => {
     };
 
     return (
-        <div className="bg-white shadow-md rounded p-4 h-full flex flex-col justify-between">
+        <div className="bg-white shadow-md rounded p-4 h-full flex flex-col justify-between rounded-xl">
             <h2 className="text-lg font-bold">{song['track_name']}</h2>
             <p>{song['artists']}</p>
             <p className="text-sm text-gray-500">{song['track_genre']}</p>
