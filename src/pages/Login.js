@@ -18,12 +18,12 @@ function Login(){
         await timeout(500);
         if (res != ''){
             setError(res);
-            setIsLoggingIn(false);
         }else{
             setError('');
-            setIsLoggingIn(false);
+
             navigate("/feed");
         }
+        setIsLoggingIn(false);
     };
 
     const usernameChange = (event) => {

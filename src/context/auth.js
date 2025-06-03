@@ -38,7 +38,10 @@ export const AuthProvider = ({children}) => {
       }
   };
 
-  const register = async (username, password) =>{
+  const register = async (username, password, confPassword) =>{
+    if(password != confPassword){
+      return "Password not the same";
+    }
     try {
         const userInfo = {
             'username':username,
@@ -51,7 +54,7 @@ export const AuthProvider = ({children}) => {
         })
         const data = await response.json();
         if (response.ok) {
-            return ""
+            return '';
         }
         else{
             return data["detail"];

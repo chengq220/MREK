@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import timeout from '../utils/time';
 
@@ -7,8 +7,9 @@ function Register(){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isRegistering, setIsRegistering] = useState('');
-    const [error, setError] = useState(false);
+    const [confPassword, setConfPassword] = useState('');
+    const [isRegistering, setIsRegistering] = useState(false);
+    const [error, setError] = useState('');
     const {register} = useAuth();
 
     const usernameChange = (event) => {
@@ -19,21 +20,24 @@ function Register(){
         setPassword(event.target.value)
     }
 
+    const confPassChange = (event) => {
+        setConfPassword(event.target.value)
+    }
+
     const registerUser = async (event) =>{
         event.preventDefault()
         setIsRegistering(true);
-        const res = await register(username, password);
+        const res = await register(username, password, confPassword);
         await timeout(500);
         if (res != ''){
             setError(res);
-            setIsRegistering(false);
         }else{
             setError('');
-            setIsRegistering(false);
             navigate("/login");
         }
-        
+        setIsRegistering(false);
     };
+
 
     return(
         <section>
@@ -48,13 +52,18 @@ function Register(){
                             onSubmit={registerUser}>
                             <div>
                                 <label className="block mb-2 text-sm font-semibold">Username</label>
-                                <input type="email" name="email" id="email" onChange={usernameChange} required 
-                                    className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500 ${error? "border-2 border-red-400" : ""}`}/>
+                                <input type="text" name="username" id="usernmae" onChange={usernameChange} required 
+                                      className={`lock w-full border bg-primary-600 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 ${error? "border-2 border-red-400" : ""}`} />
                             </div>
-                            <div>
+                             <div>
                                 <label className="block mb-2 text-sm font-semibold">Password</label>
                                 <input type="password" name="password" id="password" onChange={passwordChange} required 
-                                    className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:border-blue-500 ${error? "border-2 border-red-400" : ""}`}/>
+                                    className={`block w-full border bg-primary-600 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 ${error? "border-2 border-red-400" : ""}`}/>
+                            </div>
+                            <div>
+                                <label className="block mb-2 text-sm font-semibold">Confirm Password</label>
+                                <input type="password" name="password" id="password" onChange={confPassChange} required 
+                                    className={`block w-full border bg-primary-600 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 ${error? "border-2 border-red-400" : ""}`}/>
                             </div>
                             {isRegistering?
                             <div className="flex flex-row bg-gray-600 rounded-xl align-items justify-center">
