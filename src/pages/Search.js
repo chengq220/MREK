@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import List from '../components/List';
+import queryDatabase from '../database/query';
 
 function Search(){
     const [isOpen, setIsOpen] = useState(false);
@@ -23,25 +24,17 @@ function Search(){
         setIsLoading(true);
         setSnapShot(structuredClone(data));
         if(query != ""){
-            console.log(category);
             const payload = {"category": category,
-                        "query": query}
-            try{
-                const res = await fetch("http://localhost:8000/search", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                });
-                if(res.ok){
-                    const data = await res.json();
-                    setData(data["result"]);
-                }
-            }catch(error){
-                console.log("server error caught")
+                        "query": query};
+            const endpoint = "http://localhost:8000/search";
+            const response = await queryDatabase(payload, endpoint);
+            if(response == null){
+                console.log("error occured")
+            }else{
+                const data = await response.json();
+                setData(data["result"]);
             }
-            finally{
-                setIsLoading(false);
-            };
+            setIsLoading(false);
         }
         
     }

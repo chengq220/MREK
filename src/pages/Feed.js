@@ -3,47 +3,37 @@ import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
 import { useAuth} from '../context/AuthContext';
+import queryDatabase from '../database/query';
+import { playListAdd, playListDelete } from '../database/playlistCmd';
 import "../css/card.css";
 
 const CardDefault = ({ song }) => {
     const [isAdded, setIsAdded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isFront, setIsFront] = useState(true);
+    
     const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
-                        "song_idx": song["track_id"]}
-        
-        const res = await fetch("http://localhost:8000/addToPlaylist", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            })
-        if(res.ok){
-            console.log("added successfully")
+                        "song_idx": song["track_id"]};
+        const response = await playListAdd(payload);
+        if(response == null){
+            console.log("an error occured");
         }else{
-            console.log("error occured")
-        };
+            console.log("added successfully");
+        }
     };
 
     const deleteFromPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
-                        "song_idx": song["track_id"]}
-        try{
-            const res = await fetch("http://localhost:8000/deleteFromPlaylist", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                })
-            if(res.ok){
-                console.log("deleted successfully")
-            }else{
-                console.log("error occured")
-            };
-        }catch(error){
-            console.log("server side error");
-        };
+                        "song_idx": song["track_id"]};
+        const response = await playListDelete(payload);
+        if(response == null){
+            console.log("an error occured");
+        }else{
+            console.log("deleted successfully");
+        }
     };
 
     const clickAddDel = async () => {
@@ -86,21 +76,17 @@ function GridDefault(){
     }, []); 
 
     const fetchData = async () => {
-        try{
-            const userInfo = {
-                'username':sessionStorage.getItem("username"),
-                'hasPref': playlist ? true : false
-            }
-            const res = await fetch("http://localhost:8000/getMusic", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userInfo)
-            })
-            const dat = await res.json()
-            setData(dat.result)
-        }
-        catch (e){
-            console.log("Failed to retrieve from db")
+        const payload = {
+            'username':sessionStorage.getItem("username"),
+            'hasPref': playlist ? true : false};
+        
+        const endpoint = "http://localhost:8000/getMusic";
+        const response = await queryDatabase(payload, endpoint);
+        if(response == null){
+            console.log("error occured when reading from database");
+        }else{
+            const data = await response.json();
+            setData(data.result);
         }
     }; 
 

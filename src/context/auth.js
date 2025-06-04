@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
+import queryDatabase from "../database/query";
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState("");
@@ -9,59 +10,44 @@ export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(null);
 
   const login = async (username, password) => {
-      try {
-          const userInfo = {
-              'username':username,
-              'password':password
-          };
-          const response = await fetch("http://localhost:8000/login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(userInfo)
-          });
-
-          const data = await response.json();
-          if (response.ok) {
-            sessionStorage.setItem("login_token", data["auth_token"]);
-            sessionStorage.setItem("username", userInfo["username"]);
-            changeToken(data["auth_token"]);
-            setUser(userInfo["username"]);
-            await fetchPlaylist();
-            setIsLoading(false);
-            return '';
-          }else{
-            return data["detail"];
-          }
-      }
-      catch (error){
-        return "Failed to connect to the server";
-      }
+    const payload = {
+        'username':username,
+        'password':password};
+    
+    const endpoint = "http://localhost:8000/login";
+    const response = await queryDatabase(payload, endpoint);
+    if(response == null){
+      return "Failed to connect to the server";
+    }else{
+      const data = await response.json();
+      if (response.ok) {
+        sessionStorage.setItem("login_token", data["auth_token"]);
+        sessionStorage.setItem("username", payload["username"]);
+        changeToken(data["auth_token"]);
+        setUser(payload["username"]);
+        await fetchPlaylist();
+        setIsLoading(false);
+        return '';
+      }else{
+        return data["detail"];
+      };
+    };
   };
 
   const register = async (username, password, confPassword) =>{
     if(password != confPassword){
       return "Password not the same";
     }
-    try {
-        const userInfo = {
-            'username':username,
-            'password':password
-        }
-        const response = await fetch("http://localhost:8000/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userInfo)
-        })
-        const data = await response.json();
-        if (response.ok) {
-            return '';
-        }
-        else{
-            return data["detail"];
-        }
-    }
-    catch (error){
-        return "Failed to connect to the server";
+    const payload = {
+      'username':username,
+      'password':password};
+
+    const endpoint = "http://localhost:8000/register";
+    const response = await queryDatabase(payload, endpoint);
+    if(response == null){
+      return "Error occured";
+    }else{
+      return '';
     }
   };
 
@@ -75,22 +61,17 @@ export const AuthProvider = ({children}) => {
   };
 
   const fetchPlaylist = async() =>{
-    try{
-      const payload = {
-            "username" : user,
-            "playlist_name" : "best_playlist"
-      };
-      const res = await fetch("http://localhost:8000/getPlaylistItems", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-      })
-      if(res.ok){
-          const data = await res.json();
-          setPlaylist(data["result"]);
-      }
-    }catch(error){
-      console.log("error occured")
+    const payload = {
+        "username": user,
+        "playlist_name" : "best_playlist"};
+
+    const endpoint = "http://localhost:8000/getPlaylistItems";
+    const response = await queryDatabase(payload, endpoint);
+    if(response != null){
+        const data = await response.json();
+        setPlaylist(data["result"]);
+    }else{
+      console.log("Error occured");
     }
   }
 
@@ -101,40 +82,30 @@ export const AuthProvider = ({children}) => {
     if(tk != null){
       const payload = {
         "token":tk,
-        "username":us
-      }
-      try{
-        const res = await fetch("http://localhost:8000/verifyToken", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-        if(res.ok){
-          const dt = await res.json();
-          const vfy = dt["result"];
-          if(vfy){
-            setUser(sessionStorage.getItem("username"));
-            changeToken(tk);
-            setVerified(true);
-            await fetchPlaylist();
-          }else{
-            setVerified(false);
-          }
-          setIsLoading(false);
-          return vfy;
+        "username":us};
+      const endpoint = "http://localhost:8000/verifyToken";
+      const response = await queryDatabase(payload, endpoint);
+      if(response != null){
+        const dt = await response.json();
+        const vfy = dt["result"];
+        if(vfy){
+          setUser(sessionStorage.getItem("username"));
+          changeToken(tk);
+          setVerified(true);
+          await fetchPlaylist();
+        }else{
+          setVerified(false);
         }
-      }catch(error){
-        return 101;
       }
+    }else{
+      setVerified(false);
     }    
     setIsLoading(false);
-    setVerified(false);
-    return false;
   }
 
   const updatePlaylist = async () => {
     setIsLoading(true);
-    await fetchPlaylist;
+    await fetchPlaylist();
     setIsLoading(false);
   }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth} from '../context/AuthContext';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { playListDelete } from '../database/playlistCmd';
 
 function Entry({item, deleteItem}){
     const [isLove, setLove] = useState('')
@@ -77,20 +78,12 @@ function PlayList(){
     const deleteFromPlayList = async (item) =>{
         const payload = {"username":sessionStorage.getItem("username"),
                         "playlist_name": "best_playlist", 
-                        "song_idx": item["track_id"]}
-        try{
-            const res = await fetch("http://localhost:8000/deleteFromPlaylist", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            })
-            if(res.ok){
-                console.log("deleted successfully")
-            }else{
-                console.log("error occured")
-            };
-        }catch(error){
-            console.log("server side error");
+                        "song_idx": item["track_id"]};
+        const response = await playListDelete(payload);
+        if(response == null){
+            console.log("error occured");
+        }else{
+            console.log('deleted successfully');
         }
     };
 

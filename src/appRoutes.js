@@ -14,6 +14,7 @@ import { useEffect } from "react";
 
 function AppRoutes() {
   const {verify, token, isLoading, verifyToken} = useAuth();
+  
   useEffect(() =>{
     const authenticate = async () =>{
       await verifyToken();
