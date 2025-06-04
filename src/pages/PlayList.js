@@ -51,7 +51,7 @@ function NoList(){
                 <div>
                     You do not currently have a playlist right now
                 </div>
-                <div>Create a playlist by adding songs from Search</div>
+                <div>Create a playlist by adding songs from Search or Feed</div>
             </div>
         </div>
     );

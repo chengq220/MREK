@@ -25,7 +25,7 @@ function Register(){
     }
 
     const registerUser = async (event) =>{
-        event.preventDefault()
+        event.preventDefault();
         setIsRegistering(true);
         const res = await register(username, password, confPassword);
         await timeout(500);
