@@ -76,16 +76,31 @@ const PopUp = ({ data, closePopUp }) => {
                     <div className="basis-[60%] w-1/2 h-1/2">
                         <img className="rounded-xl" src={data["thumbnail"]} alt="thumbnail"/>
                     </div>
-                    <div className="basis-[40%] flex flex-col justify-center items-center"> 
-                        <h2 className="text-lg font-bold">Track: {data['track_name']}</h2>
-                        <p>Album: {data['album_name']}</p>
-                        <p>Artists: {data['artists']}</p>
-                        <p className="text-sm text-gray-500">Genre: {data['track_genre']}</p>
-                        <button 
-                            onClick = {clickAddDel}
-                            className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 mt-6 py-2 rounded`}>
-                                {isAdded? <FiMinus />: <IoMdAdd />}
-                        </button>
+                    <div className = "basis-[40%] flex flex-col justify-center items-center">
+                        <div className = "flex flex-row justify-center items-center">
+                            <div className="basis-[50%] flex flex-col justify-center items-center"> 
+                                <h2 className="text-lg font-bold">Track:</h2>
+                                <p>Album:</p>
+                                <p>Artists:</p>
+                                <p className="text-sm text-gray-500">Genre:</p>
+                                
+                            </div>
+                            <div className="basis-[50%] flex flex-col justify-center items-center"> 
+                                <h2 className="text-lg font-bold">{data['track_name']}</h2>
+                                <p>{data['album_name']}</p>
+                                <p>{data['artists']}</p>
+                                <p className="text-sm text-gray-500">{data['track_genre']}</p>
+                                
+                            </div>
+                        </div>
+                        <div>
+                            <button 
+                                onClick = {clickAddDel}
+                                className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 mt-6 py-2 rounded`}>
+                                    {isAdded? <FiMinus />: <IoMdAdd />}
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
