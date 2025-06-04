@@ -103,11 +103,11 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   }
 
-  const updatePlaylist = async () => {
-    setIsLoading(true);
-    await fetchPlaylist();
-    setIsLoading(false);
-  }
+  // const updatePlaylist = async () => {
+  //   setIsLoading(true);
+  //   await fetchPlaylist();
+  //   setIsLoading(false);
+  // }
 
   useEffect(() => {
     setUser(sessionStorage.getItem("username"))
@@ -115,7 +115,7 @@ export const AuthProvider = ({children}) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, register, verifyToken, updatePlaylist, setPlaylist }}>
+    <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, register, verifyToken, fetchPlaylist }}>
       {children}
     </AuthContext.Provider>
   );

@@ -10,8 +10,7 @@ export const AuthContext = createContext({
   register: () => {},
   logout: () => {},
   verifyToken: () => {},
-  updatePlaylist: () => {},
-  setPlaylist: () => {}
+  fetchPlaylist: () => {}
 });
 
 export const useAuth = () => {

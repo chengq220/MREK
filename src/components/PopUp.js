@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { playListAdd, playListDelete } from '../database/playlistCmd';
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
+import { useAuth } from "../context/AuthContext";
 
 const PopUp = ({ data, closePopUp }) => {
-
     const [isAdded, setIsAdded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const {fetchPlaylist} = useAuth();
 
     const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
@@ -41,6 +42,7 @@ const PopUp = ({ data, closePopUp }) => {
             await addToPlayList();
             setIsAdded(true)
         };
+        await fetchPlaylist();
         setIsLoading(false);
     };
 

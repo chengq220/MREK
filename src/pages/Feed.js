@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
-import { useAuth} from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import queryDatabase from '../database/query';
 import { playListAdd, playListDelete } from '../database/playlistCmd';
 import "../css/card.css";
@@ -11,6 +11,7 @@ const CardDefault = ({ song }) => {
     const [isAdded, setIsAdded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isFront, setIsFront] = useState(true);
+    const {fetchPlaylist} = useAuth();
     
     const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
@@ -45,6 +46,7 @@ const CardDefault = ({ song }) => {
             await addToPlayList();
             setIsAdded(true)
         };
+        await fetchPlaylist();
         setIsLoading(false);
     };
 

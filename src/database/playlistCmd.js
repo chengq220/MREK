@@ -1,6 +1,5 @@
 import queryDatabase from './query';
 
-
 const playListAdd = async (payload) =>{
     const endpoint = "http://localhost:8000/addToPlaylist";
     const response = await queryDatabase(payload, endpoint);
