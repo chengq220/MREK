@@ -79,10 +79,7 @@ function Feed(){
     }, []); 
 
     const fetchData = async () => {
-        const payload = {
-            'username': user,
-            'hasPref': playlist.length > 0 ? true : false};
-        
+        const payload = {'username': user};
         const endpoint = "http://localhost:8000/getMusic";
         const response = await queryDatabase(payload, endpoint);
         if(response == null){

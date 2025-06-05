@@ -89,7 +89,6 @@ function PlayList(){
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            console.log(user)
             const payload = {"username": user,
                              "playlist_name": "best_playlist"};
             const res = await fetchPlaylist(payload);
