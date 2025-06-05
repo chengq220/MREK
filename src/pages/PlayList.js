@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useAuth} from '../context/AuthContext';
+import React, { useEffect, useState } from 'react';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { playListDelete } from '../database/playlistCmd';
+import { playListDelete, fetchPlaylist } from '../database/playlistCmd';
+import { useSelector } from 'react-redux';
 
 function Entry({item, deleteItem}){
     const [isLove, setLove] = useState('')
@@ -59,9 +59,10 @@ function NoList(){
 }
 
 function PlayList(){
-    const{ playlist, setPlaylist} = useAuth();
-    const [isLoading, setIsLoading] = useState(false);
-    const [prevPlayList, setPrevPlayList] = useState([]);
+    const user = useSelector(state => state.user.user);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ prevPlayList, setPrevPlayList ] = useState([]);
+    const [ playlist, setPlaylist ] = useState([])
 
     const deleteItem = async (idx) => {
         const snapshot = structuredClone(playlist);
@@ -76,7 +77,7 @@ function PlayList(){
     }
 
     const deleteFromPlayList = async (item) =>{
-        const payload = {"username":sessionStorage.getItem("username"),
+        const payload = {"username":user,
                         "playlist_name": "best_playlist", 
                         "song_idx": item["track_id"]};
         const response = await playListDelete(payload);
@@ -87,6 +88,10 @@ function PlayList(){
         }
     };
 
+    useEffect(() => {
+
+    }, [])
+
     if(isLoading){
         return (
             <>
@@ -94,7 +99,6 @@ function PlayList(){
             </>
         )
     }
-
 
     return(
         <>

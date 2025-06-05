@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
-import { playListAdd, playListDelete } from '../database/playlistCmd';
+import { playListAdd, playListDelete, fetchPlaylist } from '../database/playlistCmd';
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
-import { useAuth } from "../context/AuthContext";
+import { useSelector } from 'react-redux';
 
 const PopUp = ({ data, closePopUp }) => {
-    const [isAdded, setIsAdded] = useState(data["existInPlaylist"]);
-    const [isLoading, setIsLoading] = useState(false);
-    const {verified, fetchPlaylist} = useAuth();
+    const username = useSelector(state => state.user.username);
+    const verify = useSelector(state => state.user.verify);
+    const [ isAdded, setIsAdded ] = useState(data["existInPlaylist"]);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const addToPlayList = async () =>{
-        const payload = {"username":sessionStorage.getItem("username"),
+        const payload = {"username":username,
                         "playlist_name": "best_playlist", 
                         "song_idx": data["track_id"]};
         const response = await playListAdd(payload);
@@ -22,7 +23,7 @@ const PopUp = ({ data, closePopUp }) => {
     };
 
     const deleteFromPlayList = async () =>{
-        const payload = {"username":sessionStorage.getItem("username"),
+        const payload = {"username": username,
                         "playlist_name": "best_playlist", 
                         "song_idx": data["track_id"]};
         const response = await playListDelete(payload);
@@ -34,6 +35,8 @@ const PopUp = ({ data, closePopUp }) => {
     };
 
     const clickAddDel = async () => {
+        const payload = {"username": username,
+                        "playlist_name": "best_playlist"};
         setIsLoading(true);
         if(isAdded){
             await deleteFromPlayList();
@@ -42,7 +45,7 @@ const PopUp = ({ data, closePopUp }) => {
             await addToPlayList();
             setIsAdded(true)
         };
-        await fetchPlaylist();
+        await fetchPlaylist(payload);
         setIsLoading(false);
     };
 
@@ -96,7 +99,7 @@ const PopUp = ({ data, closePopUp }) => {
                             </div>
                         </div>
                         <div>
-                            {verified && <button 
+                            {verify && <button 
                                 onClick = {clickAddDel}
                                 className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 mt-6 py-2 rounded`}>
                                     {isAdded? <FiMinus />: <IoMdAdd />}

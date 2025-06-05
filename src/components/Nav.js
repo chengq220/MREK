@@ -1,7 +1,8 @@
 import "../css/navbar.css";
 import { Link } from "react-router-dom";
-import { useAuth } from '../context/AuthContext';
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../redux/user';
 
 function NavUnsigned(){
   return(
@@ -20,7 +21,9 @@ function NavUnsigned(){
 }
 
 function NavSigned(){
-  const {user, logout} = useAuth();
+  const username = useSelector(state => state.user.username)
+  const dispatch = useDispatch();
+  
   return(
     <nav className="w-full bg-slate-900 text-white shadow-md px-4 py-3 mt-1">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between flex-wrap">
@@ -30,12 +33,12 @@ function NavSigned(){
         <div className="hidden lg:flex gap-6 text-sm">
           <Link to="/search">Search</Link>
           <Link to="/feed" className="hover:text-gray-300">Feed</Link>
-          <Link to="/playlist" state={{update:true}} className="hover:text-gray-300">Playlist</Link>
+          <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
            <div className="dropdown">
-            <button className="dropbtn">{user}</button>
+            <button className="dropbtn">{username}</button>
             <div className="dropdown-content">
-              <Link to="/Account">Account</Link>
-              <Link onClick={logout}>Logout</Link>
+              <Link to="/">Account</Link>
+              <Link onClick={() => dispatch(logout())}>Logout</Link>
             </div>
           </div> 
         </div>
@@ -45,8 +48,8 @@ function NavSigned(){
 }
 
 function Nav(){
-  const {verify} = useAuth();
-  useEffect(() => {}, [verify])
+  const verify = useSelector(state => state.user.verify);
+  
   return(
     <>
       {verify  ? <NavSigned /> : <NavUnsigned />}
