@@ -103,14 +103,8 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   }
 
-  // const updatePlaylist = async () => {
-  //   setIsLoading(true);
-  //   await fetchPlaylist();
-  //   setIsLoading(false);
-  // }
-
   useEffect(() => {
-    setUser(sessionStorage.getItem("username"))
+    setUser(sessionStorage.getItem("username"));
     changeToken(sessionStorage.getItem("login_token"));
   }, [])
 

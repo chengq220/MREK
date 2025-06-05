@@ -5,9 +5,9 @@ import { FiMinus } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 
 const PopUp = ({ data, closePopUp }) => {
-    const [isAdded, setIsAdded] = useState(false);
+    const [isAdded, setIsAdded] = useState(data["existInPlaylist"]);
     const [isLoading, setIsLoading] = useState(false);
-    const {fetchPlaylist} = useAuth();
+    const {verified, fetchPlaylist} = useAuth();
 
     const addToPlayList = async () =>{
         const payload = {"username":sessionStorage.getItem("username"),
@@ -96,11 +96,11 @@ const PopUp = ({ data, closePopUp }) => {
                             </div>
                         </div>
                         <div>
-                            <button 
+                            {verified && <button 
                                 onClick = {clickAddDel}
                                 className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 mt-6 py-2 rounded`}>
                                     {isAdded? <FiMinus />: <IoMdAdd />}
-                            </button>
+                            </button>}
                         </div>
                         
                     </div>
