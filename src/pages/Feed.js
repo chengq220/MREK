@@ -72,6 +72,7 @@ const CardDefault = ({ song }) => {
 function Feed(){
     const [ data, setData ] = useState(null);
     const playlist = useSelector(state => state.user.playlist);
+    const user = useSelector(state => state.user.username);
 
     useEffect(() => {
         fetchData();
@@ -79,7 +80,7 @@ function Feed(){
 
     const fetchData = async () => {
         const payload = {
-            'username':sessionStorage.getItem("username"),
+            'username': user,
             'hasPref': playlist.length > 0 ? true : false};
         
         const endpoint = "http://localhost:8000/getMusic";

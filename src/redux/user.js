@@ -6,6 +6,7 @@ const initalToken = sessionStorage.getItem('login_token') ? sessionStorage.getIt
 const initalUser = sessionStorage.getItem('login_token') ? sessionStorage.getItem('username')  : null;
 const initalCerify = sessionStorage.getItem('login_token') ? true  : false;
 
+//playlist is going to be the selected playlist that the user wants
 const slice = createSlice({
     name: 'user', 
     initialState: {

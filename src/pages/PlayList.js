@@ -3,6 +3,7 @@ import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { playListDelete, fetchPlaylist } from '../database/playlistCmd';
 import { useSelector } from 'react-redux';
+import Loading from '../components/Loading';
 
 function Entry({item, deleteItem}){
     const [isLove, setLove] = useState('')
@@ -59,14 +60,11 @@ function NoList(){
 }
 
 function PlayList(){
-    const user = useSelector(state => state.user.user);
+    const user = useSelector(state => state.user.username);
     const [ isLoading, setIsLoading ] = useState(false);
-    const [ prevPlayList, setPrevPlayList ] = useState([]);
     const [ playlist, setPlaylist ] = useState([])
 
     const deleteItem = async (idx) => {
-        const snapshot = structuredClone(playlist);
-        setPrevPlayList(snapshot);
         setIsLoading(true);
         let newCopy = structuredClone(playlist);
         const del = newCopy.splice(idx, 1);
@@ -77,7 +75,7 @@ function PlayList(){
     }
 
     const deleteFromPlayList = async (item) =>{
-        const payload = {"username":user,
+        const payload = {"username": user,
                         "playlist_name": "best_playlist", 
                         "song_idx": item["track_id"]};
         const response = await playListDelete(payload);
@@ -89,15 +87,22 @@ function PlayList(){
     };
 
     useEffect(() => {
-
-    }, [])
+        const fetchData = async () => {
+            setIsLoading(true);
+            console.log(user)
+            const payload = {"username": user,
+                             "playlist_name": "best_playlist"};
+            const res = await fetchPlaylist(payload);
+            if (res != null) {
+                setPlaylist(res);
+            }
+            setIsLoading(false);
+        };
+        fetchData();
+    }, []);
 
     if(isLoading){
-        return (
-            <>
-                {prevPlayList.length > 0 ? <div className="w-1/2 mx-auto"><List data = {prevPlayList} deleteItem = {deleteItem}/></div>: <NoList />}
-            </>
-        )
+        return <Loading />;
     }
 
     return(
