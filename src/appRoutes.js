@@ -8,24 +8,35 @@ import PlayList from './pages/PlayList';
 import Loading from './components/Loading';
 import Search from './pages/Search';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from './context/AuthContext';
-import { useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { verifyToken } from './redux/user';
 
 function AppRoutes() {
-  const {verify, isLoading} = useAuth();
+  const verify = useSelector(state => state.user.verify);
+  const [ isLoading, setIsLoading ] = useState(false);
 
-  if(isLoading){
-    return <Loading /> 
-  }
+  useEffect(() => {
+    setIsLoading(true);
+    const authenticate = async () => {
+      await verifyToken();
+    }
+    authenticate();
+    setIsLoading(false);
+  }, [])
   
   function PrivateRoute(){
     return verify ? <Outlet />: <Navigate to="/" replace /> ;
   }
-
+  
   function RestrictedRoute(){
     return verify ? <Navigate to="/feed" replace /> : <Outlet />;
   }
 
+  if( isLoading ){
+    return <Loading />;
+  }
+  
   return (
   <div className = "flex flex-col">
     <Nav />
@@ -34,7 +45,7 @@ function AppRoutes() {
       <Route path = "/search" element = {<Search/>} />
       <Route element={<PrivateRoute />}>
         <Route path="/feed" element={<Feed />} />
-        <Route path="/playlist" element={<PlayList />} state={{update: true}}/>
+        <Route path="/playlist" element={<PlayList />}/>
       </Route>
       <Route element={<RestrictedRoute />}>
         <Route path="/login" element={<Login />} />

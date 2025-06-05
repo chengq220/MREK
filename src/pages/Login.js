@@ -1,26 +1,26 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/user';
 import timeout from '../utils/time';
 
 function Login(){
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoggingin, setIsLoggingIn] = useState(false);
-    const {login} = useAuth();
 
     const logInWrap = async (event) =>{
         event.preventDefault();
         setIsLoggingIn(true);
-        const res = await login(username, password);
+        const res = await dispatch(login({username: username, password: password })); 
         await timeout(500);
         if (res != ''){
             setError(res);
         }else{
             setError('');
-
             navigate("/feed");
         }
         setIsLoggingIn(false);

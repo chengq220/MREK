@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useState } from 'react';
 import timeout from '../utils/time';
+import { register } from '../database/register';
+
 
 function Register(){
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ function Register(){
     const [confPassword, setConfPassword] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
     const [error, setError] = useState('');
-    const {register} = useAuth();
+
 
     const usernameChange = (event) => {
         setUsername(event.target.value)

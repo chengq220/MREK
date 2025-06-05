@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
-import { useAuth } from '../context/AuthContext';
 import queryDatabase from '../database/query';
 import { playListAdd, playListDelete } from '../database/playlistCmd';
 import "../css/card.css";
+import { useSelector } from 'react-redux';
+import { getPlaylist } from '../redux/user';
 
 const CardDefault = ({ song }) => {
-    const [isAdded, setIsAdded] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isFront, setIsFront] = useState(true);
-    const {fetchPlaylist} = useAuth();
+    const [ isAdded, setIsAdded ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const user = useSelector(state => state.user.username);
     
     const addToPlayList = async () =>{
-        const payload = {"username":sessionStorage.getItem("username"),
+        const payload = {"username":user,
                         "playlist_name": "best_playlist", 
                         "song_idx": song["track_id"]};
         const response = await playListAdd(payload);
@@ -46,7 +46,7 @@ const CardDefault = ({ song }) => {
             await addToPlayList();
             setIsAdded(true)
         };
-        await fetchPlaylist();
+        getPlaylist();
         setIsLoading(false);
     };
 
@@ -69,19 +69,17 @@ const CardDefault = ({ song }) => {
     );
 };
  
-function GridDefault(){
-    const [data, setData] = useState(null);
-    const {playlist} = useAuth();
+function Feed(){
+    const [ data, setData ] = useState(null);
+    const playlist = useSelector(state => state.user.playlist);
+    const user = useSelector(state => state.user.username);
 
     useEffect(() => {
         fetchData();
     }, []); 
 
     const fetchData = async () => {
-        const payload = {
-            'username':sessionStorage.getItem("username"),
-            'hasPref': playlist ? true : false};
-        
+        const payload = {'username': user};
         const endpoint = "http://localhost:8000/getMusic";
         const response = await queryDatabase(payload, endpoint);
         if(response == null){
@@ -98,23 +96,17 @@ function GridDefault(){
         )
     }
     return(
-        <div 
-            className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-4 md:grid-rows-4 gap-6 px-4 py-10 auto-cols-fr">
-            {data.map((item, index) => <CardDefault className="w-1/4 h-1/3"
-                key={index}
-                song={item}
-                />
-            )}
-        </div>
-    );
-}
-
-function Feed(){
-    return(
         <div className="w-1/2 mx-auto">
-            <GridDefault/>
+            <div 
+                className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-4 md:grid-rows-4 gap-6 px-4 py-10 auto-cols-fr">
+                {data.map((item, index) => <CardDefault className="w-1/4 h-1/3"
+                    key={index}
+                    song={item}
+                    />
+                )}
+            </div>
         </div>
     );
-}
+};
 
 export default Feed;
