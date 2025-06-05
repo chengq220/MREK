@@ -11,18 +11,8 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { useEffect } from "react";
 
-
 function AppRoutes() {
-  const {verify, token, isLoading, verifyToken} = useAuth();
-  
-  useEffect(() =>{
-    const authenticate = async () =>{
-      await verifyToken();
-    }
-    if(sessionStorage.getItem("login_token") != null){
-      authenticate();
-    }
-  }, [token]);
+  const {verify, isLoading} = useAuth();
 
   if(isLoading){
     return <Loading /> 
@@ -32,7 +22,7 @@ function AppRoutes() {
     return verify ? <Outlet />: <Navigate to="/" replace /> ;
   }
 
-  function RestricteRoute(){
+  function RestrictedRoute(){
     return verify ? <Navigate to="/feed" replace /> : <Outlet />;
   }
 
@@ -46,7 +36,7 @@ function AppRoutes() {
         <Route path="/feed" element={<Feed />} />
         <Route path="/playlist" element={<PlayList />} state={{update: true}}/>
       </Route>
-      <Route element={<RestricteRoute />}>
+      <Route element={<RestrictedRoute />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>

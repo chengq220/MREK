@@ -13,7 +13,6 @@ export const AuthProvider = ({children}) => {
     const payload = {
         'username':username,
         'password':password};
-    
     const endpoint = "http://localhost:8000/login";
     const response = await queryDatabase(payload, endpoint);
     if(response == null){
@@ -23,9 +22,9 @@ export const AuthProvider = ({children}) => {
       if (response.ok) {
         sessionStorage.setItem("login_token", data["auth_token"]);
         sessionStorage.setItem("username", payload["username"]);
+        await fetchPlaylist();
         changeToken(data["auth_token"]);
         setUser(payload["username"]);
-        await fetchPlaylist();
         setIsLoading(false);
         return '';
       }else{
@@ -53,10 +52,10 @@ export const AuthProvider = ({children}) => {
 
   const logout = () => {
     setIsLoading(true);
-    changeToken(null);
-    setVerified(false);
     sessionStorage.removeItem("login_token");
     sessionStorage.removeItem("username");
+    changeToken(null);
+    setVerified(false);
     setIsLoading(false);
   };
 
@@ -89,10 +88,10 @@ export const AuthProvider = ({children}) => {
         const dt = await response.json();
         const vfy = dt["result"];
         if(vfy){
-          setUser(sessionStorage.getItem("username"));
+          await fetchPlaylist();
+          setUser(us);
           changeToken(tk);
           setVerified(true);
-          await fetchPlaylist();
         }else{
           setVerified(false);
         }
@@ -103,10 +102,14 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   }
 
-  useEffect(() => {
-    setUser(sessionStorage.getItem("username"));
-    changeToken(sessionStorage.getItem("login_token"));
-  }, [])
+  useEffect(() =>{
+    const authenticate = async () => {
+      setUser(sessionStorage.getItem("username"));
+      changeToken(sessionStorage.getItem("login_token"));
+      await verifyToken();
+    };
+    authenticate();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, playlist, token, verify, isLoading, login, logout, register, verifyToken, fetchPlaylist }}>
