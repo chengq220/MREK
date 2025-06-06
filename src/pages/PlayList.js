@@ -4,6 +4,7 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { playListDelete, fetchPlaylist } from '../database/playlistCmd';
 import { useSelector } from 'react-redux';
 import Loading from '../components/Loading';
+import PlaylistSelection from './PlaylistSelection'; 
 
 function Entry({item, deleteItem}){
     const [isLove, setLove] = useState('')
@@ -21,8 +22,8 @@ function Entry({item, deleteItem}){
                 <img className="object-scale-down h-20 w-20 rounded-xl border" src={item["thumbnail"]} alt="thumbnail"/>
             </div>
             <div className="basis-[50%]">
-                <h1 className="font-semibold">{item["track_name"]}</h1>
-                <p className="text-gray-400">{item["artists"]}</p>
+                <h1 className="font-semibold overflow-hidden">{item["track_name"]}</h1>
+                <p className="text-gray-400 overflow-hidden">{item["artists"]}</p>
             </div>
             <button 
                 onClick={updateLike}
@@ -46,18 +47,18 @@ function List({data, deleteItem}){
     )
 }
 
-function NoList(){
-    return(
-        <div className = "w-1/2 mx-auto py-10">
-            <div className = "flex flex-col items-center">
-                <div>
-                    You do not currently have a playlist right now
-                </div>
-                <div>Create a playlist by adding songs from Search or Feed</div>
-            </div>
-        </div>
-    );
-}
+// function NoList(){
+//     return(
+//         <div className = "w-1/2 mx-auto py-10">
+//             <div className = "flex flex-col items-center">
+//                 <div>
+//                     You do not currently have a playlist right now
+//                 </div>
+//                 <div>Create a playlist by adding songs from Search or Feed</div>
+//             </div>
+//         </div>
+//     );
+// }
 
 function PlayList(){
     const user = useSelector(state => state.user.username);
@@ -106,7 +107,7 @@ function PlayList(){
 
     return(
         <>
-            {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist} deleteItem = {deleteItem}/></div>: <NoList />}
+            {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist} deleteItem = {deleteItem}/></div>: <PlaylistSelection />}
         </>
     );
 

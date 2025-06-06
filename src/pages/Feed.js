@@ -55,9 +55,9 @@ const CardDefault = ({ song }) => {
             <div>
                 <img className="rounded-xl" src={song["thumbnail"]} alt="thumbnail"/>
             </div>
-            <h2 className="text-lg font-bold">{song['track_name']}</h2>
-            <p>{song['artists']}</p>
-            <p className="text-sm text-gray-500">{song['track_genre']}</p>
+            <h2 className="text-lg font-bold overflow-hidden">{song['track_name']}</h2>
+            <p className='overflow-hidden'>{song['artists']}</p>
+            <p className="text-sm text-gray-500 overflow-hidden">{song['track_genre']}</p>
             <div className="flex justify-end">
                 <button 
                 onClick = {clickAddDel}
