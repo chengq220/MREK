@@ -38,7 +38,7 @@ function AppRoutes() {
   }
   
   return (
-  <div className = "flex flex-col">
+  <div className = "h-full flex flex-col">
     <Nav />
     <Routes>
       <Route path = "/" element = {<Home/>} />
