@@ -51,12 +51,10 @@ function List({data, deleteItem}){
 function NoList(){
     const { playlist_name } = useParams();
     return(
-        <div className = "w-1/2 mx-auto py-10">
+        <div className = "w-1/2 h-full mx-auto py-10">
             <div className = "flex flex-col items-center">
-                <div>
-                    You do not currently have any song in this playlist named {playlist_name}
-                </div>
-                <div>Populate this playlist by adding songs from Search or Feed</div>
+                <img className = "w-48 h-48 mb-10" src="/assets/empty.svg" />
+                <div>Start by adding songs from /search or /feed</div>
             </div>
         </div>
     );
@@ -109,9 +107,9 @@ function PlayList(){
     }
 
     return(
-        <div className = "flex justify-center items-center">
-            <div className="w-1/2">
-                <Header />
+        <div className = "flex justify-center items-center h-full">
+            <div className="w-1/2 ">
+                <Header playlist = {playlist}/>
                 {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist} deleteItem = {deleteItem}/></div>: <NoList />}
             </div>
         </div>
