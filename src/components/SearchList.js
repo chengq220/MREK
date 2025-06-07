@@ -4,7 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import { useSelector } from 'react-redux';
 
-const PopUp = ({ data, closePopUp }) => {
+const SearchCard = ({ data, closePopUp }) => {
     const username = useSelector(state => state.user.username);
     const verify = useSelector(state => state.user.verify);
     const [ isAdded, setIsAdded ] = useState(data["existInPlaylist"]);
@@ -113,4 +113,31 @@ const PopUp = ({ data, closePopUp }) => {
     )
 }
 
-export default PopUp
+function Entry({item}){
+    const [popUp, setPopUp] = useState(false);
+
+    return(
+        <div
+            onClick = {() => setPopUp(true)}
+            className="flex flex-row items-center h-24 rounded-lg overflow-hidden hover:bg-gray-200 cursor-pointer">
+            <div className = "basis-[30%] flex justify-center">
+                <img className="object-scale-down h-20 w-20 rounded-xl border" src={item["thumbnail"]} alt="thumbnail"/>
+            </div>
+            <div className="basis-[50%]">
+                <h1 className="font-semibold">{item["track_name"]}</h1>
+                <p className="text-gray-400">{item["artists"]}</p>
+            </div>
+           {popUp && <SearchCard data = {item} closePopUp= {() => setPopUp(false)} />}
+        </div>
+    );
+}
+
+function SearchList({data}){
+    return(
+        <div>
+            {data.length > 0 ? data.map((item, index) => <Entry key={index} item ={item} />): null}
+        </div>
+    )
+}
+
+export default SearchList;

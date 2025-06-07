@@ -4,7 +4,8 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { playListDelete, fetchPlaylist } from '../database/playlistCmd';
 import { useSelector } from 'react-redux';
 import Loading from '../components/Loading';
-import PlaylistSelection from './PlaylistSelection'; 
+import { useParams } from "react-router-dom";
+import Header from '../components/playListHeader';
 
 function Entry({item, deleteItem}){
     const [isLove, setLove] = useState('')
@@ -47,21 +48,23 @@ function List({data, deleteItem}){
     )
 }
 
-// function NoList(){
-//     return(
-//         <div className = "w-1/2 mx-auto py-10">
-//             <div className = "flex flex-col items-center">
-//                 <div>
-//                     You do not currently have a playlist right now
-//                 </div>
-//                 <div>Create a playlist by adding songs from Search or Feed</div>
-//             </div>
-//         </div>
-//     );
-// }
+function NoList(){
+    const { playlist_name } = useParams();
+    return(
+        <div className = "w-1/2 mx-auto py-10">
+            <div className = "flex flex-col items-center">
+                <div>
+                    You do not currently have any song in this playlist named {playlist_name}
+                </div>
+                <div>Populate this playlist by adding songs from Search or Feed</div>
+            </div>
+        </div>
+    );
+}
 
 function PlayList(){
     const user = useSelector(state => state.user.username);
+    const { playlist_name } = useParams();
     const [ isLoading, setIsLoading ] = useState(false);
     const [ playlist, setPlaylist ] = useState([])
 
@@ -77,7 +80,7 @@ function PlayList(){
 
     const deleteFromPlayList = async (item) =>{
         const payload = {"username": user,
-                        "playlist_name": "best_playlist", 
+                        "playlist_name": playlist_name, 
                         "song_idx": item["track_id"]};
         const response = await playListDelete(payload);
         if(response == null){
@@ -91,7 +94,7 @@ function PlayList(){
         const fetchData = async () => {
             setIsLoading(true);
             const payload = {"username": user,
-                             "playlist_name": "best_playlist"};
+                             "playlist_name": playlist_name};
             const res = await fetchPlaylist(payload);
             if (res != null) {
                 setPlaylist(res);
@@ -106,9 +109,12 @@ function PlayList(){
     }
 
     return(
-        <>
-            {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist} deleteItem = {deleteItem}/></div>: <PlaylistSelection />}
-        </>
+        <div className = "flex justify-center items-center">
+            <div className="w-1/2">
+                <Header />
+                {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist} deleteItem = {deleteItem}/></div>: <NoList />}
+            </div>
+        </div>
     );
 
 }

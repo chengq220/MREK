@@ -6,9 +6,11 @@ import queryDatabase from '../database/query';
 import { playListAdd, playListDelete } from '../database/playlistCmd';
 import "../css/card.css";
 import { useSelector } from 'react-redux';
-import { getPlaylist } from '../redux/user';
+import { getUserPlaylist } from '../redux/user';
+import { useDispatch } from 'react-redux';
 
 const CardDefault = ({ song }) => {
+    const dispatch = useDispatch()
     const [ isAdded, setIsAdded ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(false);
     const user = useSelector(state => state.user.username);
@@ -46,7 +48,7 @@ const CardDefault = ({ song }) => {
             await addToPlayList();
             setIsAdded(true)
         };
-        getPlaylist();
+        await dispatch(getUserPlaylist());
         setIsLoading(false);
     };
 
@@ -71,7 +73,7 @@ const CardDefault = ({ song }) => {
  
 function Feed(){
     const [ data, setData ] = useState(null);
-    const playlist = useSelector(state => state.user.playlist);
+    // const playlist = useSelector(state => state.user.playlist);
     const user = useSelector(state => state.user.username);
 
     useEffect(() => {

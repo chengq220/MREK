@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import List from '../components/List';
+import SearchList from '../components/SearchList';
 import queryDatabase from '../database/query';
 
 function Search(){
@@ -93,7 +93,7 @@ function Search(){
                     </form>
                 </div>
                 <div className="py-10">
-                    {isLoading? <List data = {snapShot}/> : <List data={data}/>}
+                    {isLoading? <SearchList data = {snapShot}/> : <SearchList data={data}/>}
                 </div>
                 
             </div>

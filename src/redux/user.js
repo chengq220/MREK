@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import queryDatabase from "../database/query";
 
-
-const initalToken = sessionStorage.getItem('login_token') ? sessionStorage.getItem('login_token') : null;
 const initalUser = sessionStorage.getItem('login_token') ? sessionStorage.getItem('username')  : null;
+const initalToken = sessionStorage.getItem('login_token') ? sessionStorage.getItem('login_token') : null;
 const initalCerify = sessionStorage.getItem('login_token') ? true  : false;
 
-//playlist is going to be the selected playlist that the user wants
+//playlist is going to be the index of the selected playlist that the user wants
 const slice = createSlice({
     name: 'user', 
     initialState: {
@@ -39,6 +38,23 @@ export default slice.reducer;
 
 const {loginSuccess, logoutSuccess, verifyLogin, setPlaylist} = slice.actions;
 
+export const getUserPlaylist = () => async (dispatch, getState) => {
+    const { username } = getState().user;
+    try{
+        const payload = {"username": username};
+        const endpoint = "http://localhost:8000/getPlaylist";
+        const response = await queryDatabase(payload, endpoint);
+        if(response != null){
+            const data = await response.json();
+            await dispatch(setPlaylist({playlist: data["result"]}));
+        }else{
+            return console.error("Error occured");
+        }
+    }catch(error){
+        return console.error(error.message); 
+    }
+}
+
 export const login = ({username, password}) => async dispatch => {
     try{
         const payload = {
@@ -55,6 +71,7 @@ export const login = ({username, password}) => async dispatch => {
                 sessionStorage.setItem("login_token", data["auth_token"]);
                 sessionStorage.setItem("username", username);
                 await dispatch(loginSuccess({username:username, token: data["auth_token"], isVerified: true}));
+                await dispatch(getUserPlaylist());
                 return '';
             }
             else{
@@ -66,16 +83,15 @@ export const login = ({username, password}) => async dispatch => {
     }
 }
 
-
 export const logout = () => dispatch => {
     sessionStorage.removeItem("login_token");
     sessionStorage.removeItem("username");
     return dispatch(logoutSuccess());
 }
 
-
-export const verifyToken = () => async (dispatch, getState) => {
-    const { token, user } = getState().user;
+export const verifyToken = () => async (dispatch) => {
+    const token = sessionStorage.getItem("login_token");
+    const user = sessionStorage.getItem("username");
     try{
         if(token != null){
           const payload = {
@@ -85,30 +101,10 @@ export const verifyToken = () => async (dispatch, getState) => {
           const response = await queryDatabase(payload, endpoint);
           if(response != null){
             const dt = await response.json();
-            const vfy = dt["result"];
-            await dispatch(verifyLogin({verified: vfy}));
+            await dispatch(verifyLogin({isVerified: dt["result"]}));
+            await dispatch(getUserPlaylist());
           };
         };
-    }catch(error){
-        return console.error(error.message); 
-    }
-}
-
-export const getPlaylist = () => async (dispatch, getState) => {
-    const { user } = getState().user;
-    try{
-        const payload = {
-            "username": user,
-            "playlist_name" : "best_playlist"};
-
-        const endpoint = "http://localhost:8000/getPlaylistItems";
-        const response = await queryDatabase(payload, endpoint);
-        if(response != null){
-            const data = await response.json();
-            await dispatch(setPlaylist({playlist: data["result"]}));
-        }else{
-            return console.error("Error occured");
-        }
     }catch(error){
         return console.error(error.message); 
     }
