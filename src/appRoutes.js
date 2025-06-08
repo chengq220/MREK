@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import PlayList from './pages/PlayList';
 import Loading from './components/Loading';
 import Search from './pages/Search';
+import NotFound from './pages/NotFound';
 import PlaylistSelection from './pages/PlaylistSelection';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -57,6 +58,7 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   </div>
   );

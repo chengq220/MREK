@@ -4,7 +4,7 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { playListDelete, fetchPlaylist } from '../database/playlistCmd';
 import { useSelector } from 'react-redux';
 import Loading from '../components/Loading';
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import Header from '../components/playListHeader';
 
 function Entry({item, deleteItem}){
@@ -43,17 +43,19 @@ function Entry({item, deleteItem}){
 function List({data, deleteItem}){
     return(
         <div className="py-10">
+            <Header playlist = {data}/>
             {data.map((item, index) => <Entry key={index} item ={item} deleteItem = {() => deleteItem(index)}/>)}
         </div>
     )
 }
 
 function NoList(){
-    const { playlist_name } = useParams();
     return(
         <div className = "w-1/2 h-full mx-auto py-10">
             <div className = "flex flex-col items-center">
-                <img className = "w-48 h-48 mb-10" src="/assets/empty.svg" />
+                <div className = "bg-gray-100 mb-10 p-10 rounded-full">
+                    <img className = "w-48 h-48 " src="/assets/empty.svg" />
+                </div>
                 <div>Start by adding songs from /search or /feed</div>
             </div>
         </div>
@@ -62,9 +64,16 @@ function NoList(){
 
 function PlayList(){
     const user = useSelector(state => state.user.username);
+    const userPlaylists = useSelector(state => state.user.playlist);
     const { playlist_name } = useParams();
     const [ isLoading, setIsLoading ] = useState(false);
-    const [ playlist, setPlaylist ] = useState([])
+    const [ playlist, setPlaylist ] = useState([]);
+
+    const isInvalidName = !playlist_name || 
+        playlist_name.endsWith('.css') || 
+        playlist_name.includes('.') || 
+        !userPlaylists.map(item => item["playlist"]).includes(playlist_name);
+        
 
     const deleteItem = async (idx) => {
         setIsLoading(true);
@@ -90,6 +99,9 @@ function PlayList(){
 
     useEffect(() => {
         const fetchData = async () => {
+            if(isInvalidName){
+                return;
+            }
             setIsLoading(true);
             const payload = {"username": user,
                              "playlist_name": playlist_name};
@@ -102,14 +114,18 @@ function PlayList(){
         fetchData();
     }, []);
 
+    
     if(isLoading){
         return <Loading />;
+    }
+
+    if(isInvalidName){
+        return <Navigate to="/not-found" />;
     }
 
     return(
         <div className = "flex justify-center items-center h-full">
             <div className="w-1/2 ">
-                <Header playlist = {playlist}/>
                 {playlist.length > 0 ? <div className="w-1/2 mx-auto"><List data = {playlist} deleteItem = {deleteItem}/></div>: <NoList />}
             </div>
         </div>
