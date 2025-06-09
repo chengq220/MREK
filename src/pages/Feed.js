@@ -1,73 +1,24 @@
 import { useEffect, useState } from 'react';
-import { IoMdAdd } from "react-icons/io";
-import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
 import queryDatabase from '../database/query';
-import { playListAdd, playListDelete } from '../database/playlistCmd';
-import { useSelector, useDispatch } from 'react-redux';
-import { getUserPlaylist, updatePlaylistExist } from '../redux/user';
-// import AddDelButton from '../components/AddDelButton';
-import "../css/card.css";
 import AddDelButton from '../components/AddDelButton';
+import { useSelector, useDispatch } from 'react-redux';
+import { updatePlaylistExist } from '../redux/user';
+import "../css/card.css";
 
 const CardDefault = ({ song }) => {
-    const dispatch = useDispatch();
-    const [ isAdded, setIsAdded ] = useState(false);
-    const [ isLoading, setIsLoading ] = useState(false);
-    const user = useSelector(state => state.user.username);
-    
-    const addToPlayList = async () =>{
-        const payload = {"username":user,
-                        "playlist_name": "best_playlist", 
-                        "song_idx": song["track_id"]};
-        const response = await playListAdd(payload);
-        if(response == null){
-            console.log("an error occured");
-        }else{
-            console.log("added successfully");
-        }
-    };
-
-    const deleteFromPlayList = async () =>{
-        const payload = {"username":sessionStorage.getItem("username"),
-                        "playlist_name": "best_playlist", 
-                        "song_idx": song["track_id"]};
-        const response = await playListDelete(payload);
-        if(response == null){
-            console.log("an error occured");
-        }else{
-            console.log("deleted successfully");
-        }
-    };
-
-    const clickAddDel = async () => {
-        setIsLoading(true);
-        if(isAdded){
-            await deleteFromPlayList();
-            setIsAdded(false);
-        }else{
-            await addToPlayList();
-            setIsAdded(true)
-        };
-        await dispatch(getUserPlaylist());
-        setIsLoading(false);
-    };
-
     return (
          <div className="bg-white shadow-md rounded p-4 h-full flex flex-col justify-between rounded-xl">
             <div>
                 <img className="rounded-xl" src={song["thumbnail"]} alt="thumbnail"/>
             </div>
-            <h2 className="text-lg font-bold overflow-hidden">{song['track_name']}</h2>
-            <p className='overflow-hidden'>{song['artists']}</p>
-            <p className="text-sm text-gray-500 overflow-hidden">{song['track_genre']}</p>
+            <div className = "w-[150px]">
+                 <h2 className="text-lg font-bold truncate">{song['track_name']}</h2>
+            </div>
+            <p className='truncate w-[150px]'>{song['artists']}</p>
+            <p className="text-sm text-gray-500 truncate w-[150px]">{song['track_genre']}</p>
             <div className="flex justify-end">
-                {/* <button 
-                onClick = {clickAddDel}
-                className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 py-2 rounded`}>
-                    {isAdded? <FiMinus />: <IoMdAdd />}
-                </button> */}
-                <AddDelButton />
+                <AddDelButton song_idx={song["track_id"]}/>
             </div>
         </div>
     );

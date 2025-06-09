@@ -14,7 +14,6 @@ function DropDownItem({playlist_name, user, song_idx}){
         const payload = {"username": user,
                         "playlist_name": playlist_name, 
                         "song_idx": song_idx};
-        console.log(payload);
         const response = await playListAdd(payload);
         if(response == null){
             console.log("an error occured");

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FcLike, FcLikePlaceholder  } from "react-icons/fc";
-import { HiOutlineDotsVertical } from "react-icons/hi";
 import { playListDelete, fetchPlaylist } from '../database/playlistCmd';
 import { useSelector } from 'react-redux';
 import Loading from '../components/Loading';
 import { useParams, Navigate } from "react-router-dom";
 import Header from '../components/playListHeader';
+import { CiBookmarkRemove } from "react-icons/ci";
 
 function Entry({item, deleteItem}){
-    const [isLove, setLove] = useState('')
+    const [isLove, setLove] = useState(false);
     const updateLike = () =>{
-        console.log("hi")
+        setLove(!isLove);
     }
 
     const elementDelete = () => {
@@ -18,13 +18,13 @@ function Entry({item, deleteItem}){
     }
     
     return(
-        <div className="flex flex-row items-center h-24 rounded-lg overflow-hidden">
+        <div className="flex flex-row items-center h-24 rounded-lg">
             <div className = "basis-[30%] flex justify-center">
                 <img className="object-scale-down h-20 w-20 rounded-xl border" src={item["thumbnail"]} alt="thumbnail"/>
             </div>
-            <div className="basis-[50%]">
-                <h1 className="font-semibold overflow-hidden">{item["track_name"]}</h1>
-                <p className="text-gray-400 overflow-hidden">{item["artists"]}</p>
+            <div className="basis-[50%] w-[150px]">
+                <h1 className="font-semibold truncate">{item["track_name"]}</h1>
+                <p className="text-gray-400 truncate">{item["artists"]}</p>
             </div>
             <button 
                 onClick={updateLike}
@@ -34,7 +34,7 @@ function Entry({item, deleteItem}){
             <button 
                 onClick={elementDelete}
                 className="basis-[10%]">
-                <HiOutlineDotsVertical />
+                <CiBookmarkRemove />
             </button>
         </div>
     );
