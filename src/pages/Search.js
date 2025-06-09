@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import SearchList from '../components/SearchList';
 import queryDatabase from '../database/query';
+import { useSelector, useDispatch } from 'react-redux';
+import { updatePlaylistExist } from '../redux/user';
 
 function Search(){
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [category, setCategory] = useState("Artist");
     const [query, setQuery] = useState("");
     const [snapShot, setSnapShot] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
+    const playlist = useSelector(state => state.user.playlist).map(song_idx => song_idx["playlist"]);
 
     const handleCategory = (input) => {
         setCategory(input);
@@ -23,9 +27,11 @@ function Search(){
         event.preventDefault();
         setIsLoading(true);
         setSnapShot(structuredClone(data));
-        if(query != ""){
+
+        if(query !== ""){
             const payload = {"category": category,
-                        "query": query};
+                            "query": query,
+                            "playlists": playlist};
             const endpoint = "http://localhost:8000/search";
             const response = await queryDatabase(payload, endpoint);
             if(response == null){
@@ -33,6 +39,7 @@ function Search(){
             }else{
                 const data = await response.json();
                 setData(data["result"]);
+                dispatch(updatePlaylistExist(data["exist"]));
             }
             setIsLoading(false);
         }
@@ -93,7 +100,7 @@ function Search(){
                     </form>
                 </div>
                 <div className="py-10">
-                    {isLoading? <SearchList data = {snapShot}/> : <SearchList data={data}/>}
+                    {isLoading? <SearchList data = {snapShot}/> : <SearchList data={data} />}
                 </div>
                 
             </div>

@@ -4,13 +4,13 @@ import { FiMinus } from "react-icons/fi";
 import Loading from "../components/Loading";
 import queryDatabase from '../database/query';
 import { playListAdd, playListDelete } from '../database/playlistCmd';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserPlaylist, updatePlaylistExist } from '../redux/user';
+import AddDelButton from '../components/AddDelButton';
 import "../css/card.css";
-import { useSelector } from 'react-redux';
-import { getUserPlaylist } from '../redux/user';
-import { useDispatch } from 'react-redux';
 
 const CardDefault = ({ song }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const [ isAdded, setIsAdded ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(false);
     const user = useSelector(state => state.user.username);
@@ -73,15 +73,17 @@ const CardDefault = ({ song }) => {
  
 function Feed(){
     const [ data, setData ] = useState(null);
-    // const playlist = useSelector(state => state.user.playlist);
     const user = useSelector(state => state.user.username);
+    const playlist = useSelector(state => state.user.playlist).map(song_idx => song_idx["playlist"]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         fetchData();
     }, []); 
 
     const fetchData = async () => {
-        const payload = {'username': user};
+        const payload = {
+                    'username': user};
         const endpoint = "http://localhost:8000/getMusic";
         const response = await queryDatabase(payload, endpoint);
         if(response == null){
@@ -89,6 +91,7 @@ function Feed(){
         }else{
             const data = await response.json();
             setData(data.result);
+            dispatch(updatePlaylistExist(data["exist"]));
         }
     }; 
 

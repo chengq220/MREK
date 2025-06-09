@@ -1,54 +1,9 @@
 import { useState, useEffect } from 'react';
-import { playListAdd, playListDelete, fetchPlaylist } from '../database/playlistCmd';
-import { IoMdAdd } from "react-icons/io";
-import { FiMinus } from "react-icons/fi";
 import { useSelector } from 'react-redux';
+import AddDelButton from './AddDelButton';
 
 const SearchCard = ({ data, closePopUp }) => {
-    const username = useSelector(state => state.user.username);
     const verify = useSelector(state => state.user.verify);
-    const [ isAdded, setIsAdded ] = useState(data["existInPlaylist"]);
-    const [ isLoading, setIsLoading ] = useState(false);
-
-    const addToPlayList = async () =>{
-        const payload = {"username":username,
-                        "playlist_name": "best_playlist", 
-                        "song_idx": data["track_id"]};
-        const response = await playListAdd(payload);
-        if(response == null){
-            console.log("an error occured");
-        }else{
-            console.log("added successfully");
-        }
-    };
-
-    const deleteFromPlayList = async () =>{
-        const payload = {"username": username,
-                        "playlist_name": "best_playlist", 
-                        "song_idx": data["track_id"]};
-        const response = await playListDelete(payload);
-        if(response == null){
-            console.log("an error occured");
-        }else{
-            console.log("deleted successfully");
-        }
-    };
-
-    const clickAddDel = async () => {
-        const payload = {"username": username,
-                        "playlist_name": "best_playlist"};
-        setIsLoading(true);
-        if(isAdded){
-            await deleteFromPlayList();
-            setIsAdded(false);
-        }else{
-            await addToPlayList();
-            setIsAdded(true)
-        };
-        await fetchPlaylist(payload);
-        setIsLoading(false);
-    };
-
 
     const handlelosePopUp = (e) => {
         e.stopPropagation();
@@ -99,11 +54,7 @@ const SearchCard = ({ data, closePopUp }) => {
                             </div>
                         </div>
                         <div>
-                            {verify && <button 
-                                onClick = {clickAddDel}
-                                className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 mt-6 py-2 rounded`}>
-                                    {isAdded? <FiMinus />: <IoMdAdd />}
-                            </button>}
+                            {verify && <AddDelButton song_idx={data['track_id']} />}
                         </div>
                         
                     </div>
@@ -127,7 +78,7 @@ function Entry({item}){
                 <h1 className="font-semibold">{item["track_name"]}</h1>
                 <p className="text-gray-400">{item["artists"]}</p>
             </div>
-           {popUp && <SearchCard data = {item} closePopUp= {() => setPopUp(false)} />}
+           {popUp && <SearchCard data = {item} closePopUp= {() => setPopUp(false)}/>}
         </div>
     );
 }
@@ -135,7 +86,7 @@ function Entry({item}){
 function SearchList({data}){
     return(
         <div>
-            {data.length > 0 ? data.map((item, index) => <Entry key={index} item ={item} />): null}
+            {data.length > 0 ? data.map((item, index) => <Entry key={index} item ={item}/>): null}
         </div>
     )
 }

@@ -1,6 +1,5 @@
-import "../css/navbar.css";
+import "../css/dropdown.css";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/user';
 
@@ -34,7 +33,7 @@ function NavSigned(){
           <Link to="/search">Search</Link>
           <Link to="/feed" className="hover:text-gray-300">Feed</Link>
           <Link to="/playlist" className="hover:text-gray-300">Playlist</Link>
-           <div className="dropdown">
+          <div className="dropdown">
             <button className="dropbtn">{username}</button>
             <div className="dropdown-content">
               <Link to="/">Account</Link>
