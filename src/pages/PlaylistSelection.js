@@ -27,7 +27,7 @@ function Card({item, index, userIdx}){
     return(
         <div 
             className="w-1/5 h-1/5 bg-gray-200 ml-4 mr-4 text-center p-8 rounded-2xl 
-                opacity-60 scale-95 
+                opacity-60 scale-95 truncate w-[20px]
                 transition-all duration-300 ease-in-out ">
             {item["playlist"]}
         </div>
