@@ -50,7 +50,6 @@ export const getUserPlaylist = () => async (dispatch, getState) => {
         if(response != null){
             const data = await response.json();
             dispatch(setPlaylist({playlist: data["result"]}));
-            dispatch(setPlaylistExist({playlistExist: data["exist"]}));
         }else{
             return console.error("Error occured");
         }

@@ -2,18 +2,13 @@ import { FaCaretRight } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import { ImCheckboxUnchecked, ImCheckboxChecked  } from "react-icons/im";
 import { playListAdd, playListDelete, fetchPlaylist } from '../database/playlistCmd';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../css/dropdown.css";
 
 function DropDownItem({playlist_name, user, song_idx}){
 
     const playlist_exist = useSelector(state => state.user.playlistExist);
     const [exist, setExist] = useState(playlist_exist.some(item => item["playlist_name"] === playlist_name && item["song_id"] === song_idx));
-    const [isLoading, setIsLoading] = useState(false);
-
-    // useEffect(() => {
-    //     console.log(playlist_exist);
-    // }, [])
 
     const addToPlayList = async () =>{
         const payload = {"username": user,
@@ -43,16 +38,14 @@ function DropDownItem({playlist_name, user, song_idx}){
     const clickAddDel = async () => {
         const payload = {"username": user,
                         "playlist_name": playlist_name};
-        setIsLoading(true);
         if(exist){
             await deleteFromPlayList();
             setExist(false);
         }else{
             await addToPlayList();
-            setExist(true)
+            setExist(true);
         };
         await fetchPlaylist(payload);
-        setIsLoading(false);
     };
 
     return(
@@ -72,17 +65,14 @@ function DropDownItem({playlist_name, user, song_idx}){
 function AddDelButton({song_idx}){
     const playlist = useSelector(state => state.user.playlist).map(pl_idx => pl_idx["playlist"]);
     const username = useSelector(state => state.user.username);
-    useEffect(()=>{
-        console.log(playlist);
-    }, [])
 
     return (
-        <div className="dropdown">
+        <div className="dropdown flex flex-row">
             <button className="dropbtn flex flex-row bg-green-500 justify-center items-center p-3 rounded-2xl mt-4">
                 <div>Add to Playlist</div>
                 <FaCaretRight />
             </button>
-            <div className="dropdown-content rounded-xl">
+            <div className="dropdown-content rounded-xl left-full top-px">
                 {playlist.map((item, idx)=> <DropDownItem key={idx} playlist_name={item} user={username} song_idx={song_idx}/>)}
             </div>
         </div> 

@@ -6,8 +6,9 @@ import queryDatabase from '../database/query';
 import { playListAdd, playListDelete } from '../database/playlistCmd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserPlaylist, updatePlaylistExist } from '../redux/user';
-import AddDelButton from '../components/AddDelButton';
+// import AddDelButton from '../components/AddDelButton';
 import "../css/card.css";
+import AddDelButton from '../components/AddDelButton';
 
 const CardDefault = ({ song }) => {
     const dispatch = useDispatch();
@@ -61,11 +62,12 @@ const CardDefault = ({ song }) => {
             <p className='overflow-hidden'>{song['artists']}</p>
             <p className="text-sm text-gray-500 overflow-hidden">{song['track_genre']}</p>
             <div className="flex justify-end">
-                <button 
+                {/* <button 
                 onClick = {clickAddDel}
                 className={`${isAdded ? "bg-red-500" : "bg-blue-500"} ${isLoading? "pointer-events-none": "pointer-events-auto"} text-white px-4 py-2 rounded`}>
                     {isAdded? <FiMinus />: <IoMdAdd />}
-                </button>
+                </button> */}
+                <AddDelButton />
             </div>
         </div>
     );
@@ -83,7 +85,8 @@ function Feed(){
 
     const fetchData = async () => {
         const payload = {
-                    'username': user};
+                    'username': user,
+                    'playlists': playlist};
         const endpoint = "http://localhost:8000/getMusic";
         const response = await queryDatabase(payload, endpoint);
         if(response == null){
