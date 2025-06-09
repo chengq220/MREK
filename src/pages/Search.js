@@ -11,7 +11,7 @@ function Search(){
     const [query, setQuery] = useState("");
     const [snapShot, setSnapShot] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
     const playlist = useSelector(state => state.user.playlist).map(song_idx => song_idx["playlist"]);
 
     const handleCategory = (input) => {
@@ -32,6 +32,7 @@ function Search(){
             const payload = {"category": category,
                             "query": query,
                             "playlists": playlist};
+            console.log(payload);
             const endpoint = "http://localhost:8000/search";
             const response = await queryDatabase(payload, endpoint);
             if(response == null){
@@ -100,7 +101,7 @@ function Search(){
                     </form>
                 </div>
                 <div className="py-10">
-                    {isLoading? <SearchList data = {snapShot}/> : <SearchList data={data} />}
+                    {isLoading ? <SearchList data = {snapShot}/> : <SearchList data={data} />}
                 </div>
                 
             </div>

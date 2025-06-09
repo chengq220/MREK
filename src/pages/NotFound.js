@@ -1,6 +1,10 @@
 function NotFound(){
     return(
-        <div>Page not found 404 error</div>
+        <div className = "h-full w-full flex justify-center items-center">
+            <div className = "w-1/2 h-1/2">
+                <img className = "w-full h-full " src="/assets/error404.svg" />
+            </div>
+        </div>
     );  
 }
 

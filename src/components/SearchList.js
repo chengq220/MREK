@@ -80,9 +80,12 @@ function Entry({item}){
 }
 
 function SearchList({data}){
+    if(data == null){
+        return null;
+    }
     return(
         <div>
-            {data.length > 0 ? data.map((item, index) => <Entry key={index} item ={item}/>): null}
+            {data.length > 0 ? data.map((item, index) => <Entry key={index} item ={item}/>): <div>No result found</div>}
         </div>
     )
 }
