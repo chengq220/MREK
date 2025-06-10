@@ -1,5 +1,5 @@
 import { SiFastapi, SiPostgresql  } from "react-icons/si";
-import { FaReact, FaSpotify, FaAws } from "react-icons/fa";
+import { FaReact, FaSpotify, FaAws, FaDocker } from "react-icons/fa";
 import { RiTailwindCssLine, RiVercelLine  } from "react-icons/ri";
 
 function Home() {
@@ -72,6 +72,7 @@ function Home() {
                     <SiFastapi size={50}/>
                     <RiTailwindCssLine size={50} />
                     <FaSpotify size={50}/>
+                    <FaDocker size = {50} />
                     <RiVercelLine size={50}/>
                     <FaAws size={50}/>
                 </div>
