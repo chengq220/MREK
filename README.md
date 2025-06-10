@@ -1,4 +1,4 @@
-# MusicRecFront
+# MREK - Music Recommendation
 Front-end Web Application for Music Recommendation System
 ## Setup
 1. git clone ```https://github.com/chengq220/MusicRecFront.git```
