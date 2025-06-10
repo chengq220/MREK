@@ -32,8 +32,7 @@ function Search(){
             const payload = {"category": category,
                             "query": query,
                             "playlists": playlist};
-            console.log(payload);
-            const endpoint = "http://localhost:8000/search";
+            const endpoint = `http://${process.env.REACT_APP_BAP}/search`;
             const response = await queryDatabase(payload, endpoint);
             if(response == null){
                 console.log("error occured")

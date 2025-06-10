@@ -30,7 +30,6 @@ const CreatePlaylistPopup = ({ closePopUp }) => {
                 "username" : username, 
                 "playlist": playlistName
             };
-            console.log("created playinglst");
             const res = await createPlaylist(payload);
             await dispatch(getUserPlaylist());
             setIsLoading(false);

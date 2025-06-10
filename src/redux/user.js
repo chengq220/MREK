@@ -45,7 +45,7 @@ export const getUserPlaylist = () => async (dispatch, getState) => {
     const { username } = getState().user;
     try{
         const payload = {"username": username};
-        const endpoint = "http://localhost:8000/getPlaylist";
+        const endpoint = `http://${process.env.REACT_APP_BAP}/getPlaylist`;
         const response = await queryDatabase(payload, endpoint);
         if(response != null){
             const data = await response.json();
@@ -68,7 +68,7 @@ export const login = ({username, password}) => async dispatch => {
             'username':username,
             'password':password};
 
-        const endpoint = "http://localhost:8000/login";
+        const endpoint = `http://${process.env.REACT_APP_BAP}/login`;
         const response = await queryDatabase(payload, endpoint);
         if(response == null){
             return "Failed to connect to the server";
@@ -104,7 +104,7 @@ export const verifyToken = () => async (dispatch) => {
           const payload = {
             "token": token,
             "username": user};
-          const endpoint = "http://localhost:8000/verifyToken";
+          const endpoint = `http://${process.env.REACT_APP_BAP}/verifyToken`;
           const response = await queryDatabase(payload, endpoint);
           if(response != null){
             const dt = await response.json();

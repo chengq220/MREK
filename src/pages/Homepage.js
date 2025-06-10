@@ -1,7 +1,6 @@
 import { SiFastapi, SiPostgresql  } from "react-icons/si";
-import { FaReact, FaSpotify  } from "react-icons/fa";
+import { FaReact, FaSpotify, FaAws } from "react-icons/fa";
 import { RiTailwindCssLine, RiVercelLine  } from "react-icons/ri";
-import { DiHeroku } from "react-icons/di";
 
 function Home() {
     return (
@@ -66,7 +65,7 @@ function Home() {
             </div>
 
             <div className="w-full bg-gray-100 p-6 rounded-xl shadow-inner">
-                <h2 className="text-xl font-semibold mb-2 text-center w-full">Tech Stack</h2>
+                <h2 className="text-2xl underline font-semibold mb-2 text-center w-full">Tech Stack</h2>
                 <div className="flex flex-row justify-between">
                     <FaReact size={50}/>
                     <SiPostgresql size={50}/>
@@ -74,7 +73,7 @@ function Home() {
                     <RiTailwindCssLine size={50} />
                     <FaSpotify size={50}/>
                     <RiVercelLine size={50}/>
-                    <DiHeroku size={50}/>
+                    <FaAws size={50}/>
                 </div>
             </div>
         </div>
