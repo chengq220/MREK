@@ -38,7 +38,7 @@ function Feed(){
         const payload = {
                     'username': user,
                     'playlists': playlist};
-        const endpoint = `http://${process.env.REACT_APP_BAP}/getMusic`;
+        const endpoint = `${process.env.REACT_APP_BAP}/getMusic`;
         const response = await queryDatabase(payload, endpoint);
         if(response == null){
             console.log("error occured when reading from database");

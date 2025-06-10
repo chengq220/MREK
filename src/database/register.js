@@ -8,7 +8,7 @@ export const register = async (username, password, confPassword) =>{
         'username':username,
         'password':password};
 
-    const endpoint = `http://${process.env.REACT_APP_BAP}/register`;
+    const endpoint = `${process.env.REACT_APP_BAP}/register`;
     const response = await queryDatabase(payload, endpoint);
     if(response == null){
         return "Error occured";
