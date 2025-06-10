@@ -65,6 +65,10 @@ function AddDelButton({song_idx}){
     const playlist = useSelector(state => state.user.playlist).map(pl_idx => pl_idx["playlist"]);
     const username = useSelector(state => state.user.username);
 
+    if (playlist.length == 0){
+        return null;
+    }
+
     return (
         <div className="dropdown flex flex-row">
             <button className="dropbtn flex flex-row bg-green-500 justify-center items-center p-3 rounded-2xl mt-4">
