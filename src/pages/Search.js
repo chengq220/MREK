@@ -15,7 +15,7 @@ function Search(){
     const playlist = useSelector(state => state.user.playlist).map(song_idx => song_idx["playlist"]);
 
     const handleCategory = (input) => {
-        setCategory(input);
+        setCategory(input); 
         setIsOpen(false);
     }
 
